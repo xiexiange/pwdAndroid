@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mCategoryFrame = new CategoryFrameLayout();
         mAddFrame = new AddFrameLayout();
         mMeFrame = new MeFrameLayout();
-        mCategoryTab.performClick();
         EventBus.getDefault().register(this);
+        mCategoryTab.performClick();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
