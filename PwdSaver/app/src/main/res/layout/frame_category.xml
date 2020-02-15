@@ -40,13 +40,11 @@
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:background="#00ECEC">
+            android:orientation="vertical">
             <RelativeLayout
             android:id="@+id/head_view"
             android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:background="#ECEC00">
+            android:layout_width="match_parent">
 
                 <com.autox.password.views.RefreshHeadbgView
                 android:id="@+id/head_bg"
@@ -59,8 +57,8 @@
                     android:layout_width="wrap_content"
                     android:text="下拉刷新"
                     android:layout_centerInParent="true"
-                    android:textColor="#ECEC00"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <TextView
                 android:layout_height="wrap_content"
