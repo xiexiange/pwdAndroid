@@ -2,6 +2,9 @@ package com.autox.password;
  
 import android.content.Context;
 
+import com.autox.password.http.ServiceInstance;
+import com.autox.password.http.entity.GetPlatMsgReception;
+import com.autox.password.utils.ClientEncodeUtil;
 import com.autox.password.utils.encode.AESUtil;
 import com.autox.password.utils.encode.HttpEncryptUtil;
 import com.autox.password.utils.encode.RSAUtil;
@@ -14,6 +17,44 @@ import java.util.Properties;
  
 public class TestHttpEncrypt {
 
+//        try {
+//            String s = HttpEncryptUtil.serverDecrypt(ClientEncodeUtil.encode("345678"));
+//            String clientCode = ClientEncodeUtil.encode("123456");
+//            ServiceInstance.getInstance().uploadPlatMsg(
+//                    ClientEncodeUtil.encodeMD5("15201933576"),
+//                    ClientEncodeUtil.encodeMD5("爱奇艺"),
+//                    "",
+//                    URLEncoder.encode(clientCode, "utf-8"),
+//                    new ServiceInstance.Callback() {
+//                        @Override
+//                        public void onSuccess(UploadPlatMsgReception reception) {
+//                            uploadSuccess(reception);
+//                        }
+//
+//                        @Override
+//                        public void onFailed() {
+//
+//                        }
+//                    });
+//        ServiceInstance.getInstance().getPlatMsg(
+//                ClientEncodeUtil.encodeMD5("15201933576"),
+//                ClientEncodeUtil.encodeMD5("爱奇艺"),
+//                "",
+//                new ServiceInstance.GetPlatCallback() {
+//                    @Override
+//                    public void onSuccess(GetPlatMsgReception reception) {
+//                        getMsgSuccess(reception);
+//                    }
+//
+//                    @Override
+//                    public void onFailed() {
+//
+//                    }
+//                });
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
+//
 	public static void testGenerateKeyPair() throws Exception{
 		//生成RSA公钥和私钥，并Base64编码
 		KeyPair keyPair = RSAUtil.getKeyPair();

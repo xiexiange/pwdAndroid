@@ -1,78 +1,61 @@
 package com.autox.password;
 
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
-import com.autox.password.http.ServiceInstance;
-import com.autox.password.http.entity.GetPlatMsgReception;
-import com.autox.password.http.entity.UploadPlatMsgReception;
-import com.autox.password.utils.ClientEncodeUtil;
-import com.autox.password.utils.encode.HttpEncryptUtil;
+import com.autox.password.event.entity.EventTabClicked;
+import com.autox.password.frames.AddFrameLayout;
+import com.autox.password.frames.CategoryFrameLayout;
+import com.autox.password.frames.MeFrameLayout;
+import com.autox.password.views.TabView;
+import com.autox.password.views.statusbar.StatusBarUtil;
 
-import java.net.URLEncoder;
-import java.security.Security;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView textView;
+    private CategoryFrameLayout mCategoryFrame;
+    private AddFrameLayout mAddFrame;
+    private MeFrameLayout mMeFrame;
+    private String mCurrentTabTitle = "";
+    private TabView mCategoryTab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.text);
-//        Security.addProvider(new SunJCE());
-        try {
-            String s = HttpEncryptUtil.serverDecrypt(ClientEncodeUtil.encode("345678"));
+        mCategoryTab = findViewById(R.id.tab_fenlei);
+        mCategoryFrame = new CategoryFrameLayout();
+        mAddFrame = new AddFrameLayout();
+        mMeFrame = new MeFrameLayout();
+        mCategoryTab.performClick();
+        EventBus.getDefault().register(this);
+    }
 
-            Log.e("Echo", "s: " + s);
-            String clientCode = ClientEncodeUtil.encode("123456");
-            Log.e("Echo", "msg: " + clientCode);
-            ServiceInstance.getInstance().uploadPlatMsg(
-                    ClientEncodeUtil.encodeMD5("15201933576"),
-                    ClientEncodeUtil.encodeMD5("爱奇艺"),
-                    "",
-                    URLEncoder.encode(clientCode, "utf-8"),
-                    new ServiceInstance.Callback() {
-                        @Override
-                        public void onSuccess(UploadPlatMsgReception reception) {
-                            uploadSuccess(reception);
-                        }
-
-                        @Override
-                        public void onFailed() {
-
-                        }
-                    });
-//            ServiceInstance.getInstance().getPlatMsg(
-//                    ClientEncodeUtil.encodeMD5("15201933576"),
-//                    ClientEncodeUtil.encodeMD5("爱奇艺"),
-//                    "",
-//                    new ServiceInstance.GetPlatCallback() {
-//                        @Override
-//                        public void onSuccess(GetPlatMsgReception reception) {
-//                            getMsgSuccess(reception);
-//                        }
-//
-//                        @Override
-//                        public void onFailed() {
-//
-//                        }
-//                    });
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTabChanged(EventTabClicked tabClicked) {
+        Fragment fragment = new Fragment();
+        if (mCurrentTabTitle.equals(tabClicked.getText())) {
+            return;
         }
+        switch (tabClicked.getText()) {
+            case "分类":
+                fragment = mCategoryFrame;
+                break;
+            case "添加":
+                fragment = mAddFrame;
+                break;
+            case "我的":
+                fragment = mMeFrame;
+                break;
+        }
+        mCurrentTabTitle = tabClicked.getText();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment)
+                .commitAllowingStateLoss();
     }
 
-    public void getMsgSuccess(GetPlatMsgReception reception) {
-        textView.setText(reception.code);
-    }
 
-    @UiThread
-    public void uploadSuccess(UploadPlatMsgReception reception) {
-        textView.setText(reception.code);
-    }
 }

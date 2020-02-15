@@ -3,7 +3,8 @@ package com.autox.password.utils.encode;
 import android.util.Log;
 
 import java.io.IOException;
- 
+import java.security.Security;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -41,7 +42,7 @@ public class AESUtil {
 	public static byte[] decryptAES(byte[] source, SecretKey key) throws Exception{
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.DECRYPT_MODE, key);
-		Log.e("Echo", cipher.getProvider().getClass().getName());
+		Log.e("Echo decryptAES", cipher.getProvider().getClass().getName());
 		return cipher.doFinal(source);
 	}
 	
