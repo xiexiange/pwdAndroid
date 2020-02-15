@@ -14,9 +14,6 @@ import java.util.Properties;
  
 public class TestHttpEncrypt {
 
-	public static void main(String[] args) throws Exception {
-		testGenerateKeyPair();
-	}
 	public static void testGenerateKeyPair() throws Exception{
 		//生成RSA公钥和私钥，并Base64编码
 		KeyPair keyPair = RSAUtil.getKeyPair();

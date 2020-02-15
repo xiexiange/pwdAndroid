@@ -1,10 +1,12 @@
 package com.autox.password.utils.encode;
+
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -27,7 +29,7 @@ public class RSAUtil {
 	//生成秘钥对
 	public static KeyPair getKeyPair() throws Exception {
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		keyPairGenerator.initialize(2048);
+		keyPairGenerator.initialize(512);
 		KeyPair keyPair = keyPairGenerator.generateKeyPair();
 		return keyPair;
 	}
