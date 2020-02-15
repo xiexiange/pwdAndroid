@@ -4,6 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff00ff">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/frame_bg">
+    <com.autox.password.views.statusbar.StatusBarPlaceHolderView
+        android:id="@+id/status_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/status_bar">
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="密码难忘"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.autox.password.views.RefreshScrollView
+        android:id="@+id/refresh_sv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_wrapper"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
+        >
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="#00ECEC">
+            <RelativeLayout
+            android:id="@+id/head_view"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:background="#ECEC00">
+
+                <com.autox.password.views.RefreshHeadbgView
+                android:id="@+id/head_bg"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/head_view_tv"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="下拉刷新"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ECEC00"
+                    android:textSize="20sp"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="20sp"
+                android:text="1n29\n30\n"/>
+        </LinearLayout>
+    </com.autox.password.views.RefreshScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
