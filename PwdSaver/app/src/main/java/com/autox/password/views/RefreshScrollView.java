@@ -110,23 +110,7 @@ public class RefreshScrollView extends ScrollView {
                     listsner.setWidthX((int)event.getX()); //设置触摸点的横坐标，用来优化头布局效果，不是非必须的
                     return true;   //拦截触摸事件，scrollView不可响应触摸事件，否则会造成松手滑动跳动错位
                 }else{ //手势判断：小于0则是上滑，此时按正常程序走
-
-                    //------------------------------------------
-
-//                    b_down = false; //不可以刷新
-
-                    //----------------------------------------
-                    int upRange = (int) (down_y - (event.getY())*1/3);   //给headView动态设置高度，动态高度是手指向下滑动距离的1/3
-                    b_down = false;    //刚开始滑动，松手还不可以刷新
-                    if(upRange >= headViewHeight){   //当动态设置的高度大于初始高度的时候，变换hint，此时松手可刷新；headViewHeight是我设置的初始高度50dp，也用来判断下拉到什么程度才能刷新
-                        listsner.hintChange("松开刷新");//超过了设定的高度，可以刷新，如果不设置这个或者设置的值太小，轻轻一拉就刷新，体验不好
-                        b_down = true; //可以刷新，如果此时抬起手指就可以刷新了
-                    }else{     //当动态设置的高度不大于初始高度的时候，变换hint，此时松手不可刷新
-                        listsner.hintChange("下拉刷新");
-                        b_down = false; //不可以刷新
-                    }
-                    listsner.setWidthX((int)event.getX()); //设置触摸点的横坐标，用来优化头布局效果，不是非必须的
-                    //------------------------------------------
+                    b_down = false; //不可以刷新
 
 
                     return super.dispatchTouchEvent(event);  //向上滑动，不拦截
