@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -128,6 +133,38 @@ public class AddActivity extends AppCompatActivity {
                 if (manager != null) manager.showSoftInput(v, 0);
             }
         });
+
+
+        InputFilter contentFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                boolean keepOriginal = true;
+                StringBuilder sb = new StringBuilder(end - start);
+                for (int i = start; i < end; i++) {
+                    char c = source.charAt(i);
+                    if (isCharAllowed(c)) // put your condition here
+                        sb.append(c);
+                    else
+                        keepOriginal = false;
+                }
+                if (keepOriginal)
+                    return null;
+                else {
+                    if (source instanceof Spanned) {
+                        SpannableString sp = new SpannableString(sb);
+                        TextUtils.copySpansFrom((Spanned) source, start, sb.length(), null, sp, 0);
+                        return sp;
+                    } else {
+                        return sb;
+                    }
+                }
+            }
+
+            private boolean isCharAllowed(char c) {
+                return !(c >=7 && c <= 32);
+            }
+        };
+        mAccountET.setFilters(new InputFilter[]{contentFilter});
         mAccountET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,25 +177,6 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable edt) {
-                String temp = edt.toString();
-                if(edt.toString().getBytes().length != edt.length()){
-                    edt.delete(temp.length()-1, temp.length());
-                }
-                try {
-                    temp = edt.toString();
-                    String tem = temp.substring(temp.length()-1, temp.length());
-                    char[] temC = tem.toCharArray();
-                    int mid = temC[0];
-                    boolean needDelete = false;
-                    if(mid>=7&&mid<=13){
-                        needDelete = true;
-                    }
-                    if (needDelete) {
-                        edt.delete(temp.length() - 1, temp.length());
-                    }
-
-                } catch (Exception e) {
-                }
                 int length = mAccountET.getText().toString().length();
                 if (length == 0) {
                     mAccountCloseIV.setVisibility(View.GONE);
@@ -177,6 +195,39 @@ public class AddActivity extends AppCompatActivity {
 
             }
         });
+
+        InputFilter pwdFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                boolean keepOriginal = true;
+                StringBuilder sb = new StringBuilder(end - start);
+                for (int i = start; i < end; i++) {
+                    char c = source.charAt(i);
+                    if (isCharAllowed(c)) // put your condition here
+                        sb.append(c);
+                    else
+                        keepOriginal = false;
+                }
+                if (keepOriginal)
+                    return null;
+                else {
+                    if (source instanceof Spanned) {
+                        SpannableString sp = new SpannableString(sb);
+                        TextUtils.copySpansFrom((Spanned) source, start, sb.length(), null, sp, 0);
+                        return sp;
+                    } else {
+                        return sb;
+                    }
+                }
+            }
+
+            private boolean isCharAllowed(char c) {
+                return c >= 33 && c <= 122;
+            }
+        };
+
+        mPwdET.setFilters(new InputFilter[]{pwdFilter});
+
         mPwdET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -191,24 +242,25 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable edt) {
                 String temp = edt.toString();
-                if(edt.toString().getBytes().length != edt.length()){
-                    edt.delete(temp.length()-1, temp.length());
-                }
-                try {
-                    temp = edt.toString();
-                    String tem = temp.substring(temp.length()-1, temp.length());
-                    char[] temC = tem.toCharArray();
-                    int mid = temC[0];
-                    boolean needDelete = true;
-                    if(mid>=33&&mid<=122){
-                        needDelete = false;
-                    }
-                    if (needDelete) {
-                        edt.delete(temp.length() - 1, temp.length());
-                    }
-
-                } catch (Exception e) {
-                }
+                //https://blog.csdn.net/qq_30054961/article/details/82463748
+//                if(edt.toString().getBytes().length != edt.length()){
+//                    edt.delete(temp.length()-1, temp.length());
+//                }
+//                try {
+//                    temp = edt.toString();
+//                    String tem = temp.substring(temp.length()-1, temp.length());
+//                    char[] temC = tem.toCharArray();
+//                    int mid = temC[0];
+//                    boolean needDelete = true;
+//                    if(mid >= 33 && mid <= 122){
+//                        needDelete = false;
+//                    }
+//                    if (needDelete) {
+//                        edt.clear();
+//                    }
+//
+//                } catch (Exception e) {
+//                }
 
 
                 int length = mPwdET.getText().toString().length();

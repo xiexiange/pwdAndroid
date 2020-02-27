@@ -123,7 +123,6 @@
                 android:ellipsize="end"
                 android:hint="账号"
                 android:textSize="14sp"
-                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:background="@null"/>
             <ImageView
                 android:id="@+id/add_page_clear_account"
