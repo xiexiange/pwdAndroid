@@ -29,7 +29,7 @@
             android:textSize="16sp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <com.autox.password.views.RefreshScrollView
+    <ScrollView
         android:id="@+id/refresh_sv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -60,11 +60,12 @@
                     android:textSize="20sp"
                     android:visibility="gone"/>
             </RelativeLayout>
-            <TextView
-                android:layout_height="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/category_recycler_view"
                 android:layout_width="match_parent"
-                android:textSize="20sp"
-                android:text="1n29\n30\n"/>
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-    </com.autox.password.views.RefreshScrollView>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
