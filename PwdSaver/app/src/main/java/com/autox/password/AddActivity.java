@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -28,6 +31,8 @@ public class AddActivity extends AppCompatActivity {
     private ImageView mIconIV;
     private TextView mTitleTV;
 
+    private RelativeLayout mBackRL;
+    private TextView mSaveTV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,7 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
         mType = (TYPE) getIntent().getSerializableExtra(EXTRA_TYPE);
         initViews();
+        bindEvents();
     }
 
     public static void start(Context context, TYPE type) {
@@ -46,6 +52,8 @@ public class AddActivity extends AppCompatActivity {
     private void initViews() {
         mIconIV = findViewById(R.id.add_page_detail_icon);
         mTitleTV = findViewById(R.id.add_page_detail_title);
+        mBackRL = findViewById(R.id.add_page_back_wrapper);
+        mSaveTV = findViewById(R.id.add_page_save_btn);
         String title;
         int imageId;
         switch (mType) {
@@ -82,6 +90,21 @@ public class AddActivity extends AppCompatActivity {
         mIconIV.setImageResource(imageId);
         mTitleTV.setText(title);
 
+    }
+
+    private void bindEvents() {
+        mBackRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        mSaveTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AddActivity.this, "保存", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
