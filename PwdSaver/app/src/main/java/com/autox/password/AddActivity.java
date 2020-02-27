@@ -139,7 +139,26 @@ public class AddActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable edt) {
+                String temp = edt.toString();
+                if(edt.toString().getBytes().length != edt.length()){
+                    edt.delete(temp.length()-1, temp.length());
+                }
+                try {
+                    temp = edt.toString();
+                    String tem = temp.substring(temp.length()-1, temp.length());
+                    char[] temC = tem.toCharArray();
+                    int mid = temC[0];
+                    boolean needDelete = false;
+                    if(mid>=7&&mid<=13){
+                        needDelete = true;
+                    }
+                    if (needDelete) {
+                        edt.delete(temp.length() - 1, temp.length());
+                    }
+
+                } catch (Exception e) {
+                }
                 int length = mAccountET.getText().toString().length();
                 if (length == 0) {
                     mAccountCloseIV.setVisibility(View.GONE);
