@@ -119,8 +119,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/add_page_account_title"
                 android:layout_marginLeft="30dp"
+                android:lines="1"
+                android:ellipsize="end"
                 android:hint="账号"
                 android:textSize="14sp"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:background="@null"/>
             <ImageView
                 android:id="@+id/add_page_clear_account"
@@ -158,6 +161,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/add_page_pwd_title"
                 android:layout_marginLeft="30dp"
+                android:lines="1"
+                android:ellipsize="end"
                 android:hint="密码"
                 android:textSize="14sp"
                 android:background="@null"/>
