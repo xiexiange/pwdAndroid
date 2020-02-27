@@ -1,5 +1,6 @@
 package com.autox.password.frames;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +34,7 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.frame_category, null);
         mRecyclerView = mRoot.findViewById(R.id.category_recycler_view);
-        initEntities();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, true));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         RecyclerView.Adapter adapter = new RecyclerViewAdapter();
         mRecyclerView.setAdapter(adapter);
         return mRoot;
@@ -85,8 +86,26 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
                 super(itemView);
                 iconIV = itemView.findViewById(R.id.item_icon);
                 titleTV = itemView.findViewById(R.id.item_title);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "clicked: " + titleTV.getText(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        initEntities();
+    }
+
+    @Override
+    public void onDetach() {
+        mEntities.clear();
+        super.onDetach();
     }
 
     private void initEntities() {
@@ -96,5 +115,6 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
         mEntities.add(new ListEntity("金融", R.drawable.icon_wallet));
         mEntities.add(new ListEntity("游戏", R.drawable.icon_game));
         mEntities.add(new ListEntity("网址", R.drawable.icon_web));
+        mEntities.add(new ListEntity("其它", R.drawable.icon_other));
     }
 }
