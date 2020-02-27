@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.autox.password.AddActivity;
 import com.autox.password.R;
 import com.autox.password.views.recyclerviews.entities.ListEntity;
 
@@ -67,7 +68,28 @@ public class AddFrameLayout extends Fragment
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "clicked: " + titleTV.getText(), Toast.LENGTH_SHORT).show();
+                        AddActivity.TYPE type = AddActivity.TYPE.GAME;
+                        switch (titleTV.getText().toString()) {
+                            case "工作":
+                                type = AddActivity.TYPE.WORK;
+                                break;
+                            case "视频":
+                                type = AddActivity.TYPE.VIDEO;
+                                break;
+                            case "邮箱":
+                                type = AddActivity.TYPE.MAIL;
+                                break;
+                            case "金融":
+                                type = AddActivity.TYPE.MONEY;
+                                break;
+                            case "网址":
+                                type = AddActivity.TYPE.WEB;
+                                break;
+                            case "其它":
+                                type = AddActivity.TYPE.OTHER;
+                                break;
+                        }
+                        AddActivity.start(getActivity(), type);
                     }
                 });
             }
