@@ -5,35 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import com.autox.password.event.entity.EventTabClicked;
-import com.autox.password.frames.AddFrameLayout;
-import com.autox.password.frames.CategoryFrameLayout;
-import com.autox.password.frames.MeFrameLayout;
-import com.autox.password.views.TabView;
+import com.autox.password.localdata.database.DbHelper;
+import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
@@ -45,6 +36,7 @@ public class AddActivity extends AppCompatActivity {
     private ImageView mAccountCloseIV;
     private EditText mPwdET;
     private ImageView mPwdCloseIV;
+    String mTitle = "其它";
     String mContentRegular = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
@@ -73,41 +65,40 @@ public class AddActivity extends AppCompatActivity {
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
-        String title;
         int imageId;
         switch (mType) {
             case WORK:
-                title = "工作";
+                mTitle = "工作";
                 imageId = R.drawable.icon_work;
                 break;
             case VIDEO:
-                title = "视频";
+                mTitle = "视频";
                 imageId = R.drawable.icon_video;
                 break;
             case MAIL:
-                title = "邮箱";
+                mTitle = "邮箱";
                 imageId = R.drawable.icon_mail;
                 break;
             case MONEY:
-                title = "金融";
+                mTitle = "金融";
                 imageId = R.drawable.icon_wallet;
                 break;
             case GAME:
-                title = "游戏";
+                mTitle = "游戏";
                 imageId = R.drawable.icon_game;
                 break;
             case WEB:
-                title = "网址";
+                mTitle = "网址";
                 imageId = R.drawable.icon_web;
                 break;
             case OTHER:
             default:
-                title = "其它";
+                mTitle = "其它";
                 imageId = R.drawable.icon_other;
                 break;
         }
         mIconIV.setImageResource(imageId);
-        mTitleTV.setText(title);
+        mTitleTV.setText(mTitle);
 
     }
 
@@ -121,7 +112,26 @@ public class AddActivity extends AppCompatActivity {
         mSaveTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddActivity.this, "保存", Toast.LENGTH_SHORT).show();
+                String type = mTitle;
+                String platform = "google";
+                String account = mAccountET.getText().toString();
+                String pwd = mPwdET.getText().toString();
+                if (TextUtils.isEmpty(account)) {
+                    Toast.makeText(AddActivity.this, "账号不能为空", Toast.LENGTH_SHORT).show();
+                    mAccountET.requestFocus();
+                    showKeyboard(v);
+                    return;
+                }
+                if (TextUtils.isEmpty(pwd)) {
+                    Toast.makeText(AddActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                    mPwdET.requestFocus();
+                    showKeyboard(v);
+                    return;
+                }
+                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwd, System.currentTimeMillis()), false);
+                List<PwdItem> lists = DbHelper.getInstance().getPwdList();
+                Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+
             }
         });
         mAccountCloseIV.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +139,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAccountET.setText("");
                 mAccountET.requestFocus();
-                InputMethodManager manager = ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
-                if (manager != null) manager.showSoftInput(v, 0);
+                showKeyboard(v);
             }
         });
 
@@ -190,8 +199,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mPwdET.setText("");
                 mPwdET.requestFocus();
-                InputMethodManager manager = ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
-                if (manager != null) manager.showSoftInput(v, 0);
+                showKeyboard(v);
 
             }
         });
@@ -272,6 +280,11 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showKeyboard(View v) {
+        InputMethodManager manager = ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
+        if (manager != null) manager.showSoftInput(v, 0);
     }
 
 }
