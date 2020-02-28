@@ -140,6 +140,10 @@ public class DbHelper extends SQLiteOpenHelper {
         db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
 
+    public void delete(SQLiteDatabase db, PwdItem item) {
+        db.delete(DB_NAME_PWD, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
