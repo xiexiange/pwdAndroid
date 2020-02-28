@@ -106,6 +106,23 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public List<PwdItem> getPwdSizeByType(String type) {
+        List<PwdItem> items = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD + " where type=\"" + type + "\"", new String[]{});
+        while (cursor.moveToNext()) {
+            PwdItem item = new PwdItem(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    Long.parseLong(cursor.getString(5))
+            );
+            items.add(item);
+        }
+        return items;
+    }
+
     public void update(SQLiteDatabase db, PwdItem item) {
         ContentValues values = new ContentValues();
         values.put("type", item.type() + "");

@@ -34,10 +34,11 @@ public class AddActivity extends AppCompatActivity {
     private TextView mTitleTV;
     private EditText mAccountET;
     private ImageView mAccountCloseIV;
+    private EditText mPlatformET;
+    private ImageView mPlatformCloseIV;
     private EditText mPwdET;
     private ImageView mPwdCloseIV;
     String mTitle = "其它";
-    String mContentRegular = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
     @Override
@@ -61,6 +62,8 @@ public class AddActivity extends AppCompatActivity {
         mTitleTV = findViewById(R.id.add_page_detail_title);
         mBackRL = findViewById(R.id.add_page_back_wrapper);
         mSaveTV = findViewById(R.id.add_page_save_btn);
+        mPlatformET = findViewById(R.id.add_page_platform_content);
+        mPlatformCloseIV = findViewById(R.id.add_page_clear_platform);
         mAccountET = findViewById(R.id.add_page_account_content);
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
@@ -109,13 +112,20 @@ public class AddActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        
         mSaveTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String type = mTitle;
-                String platform = "google";
+                String platform = mPlatformET.getText().toString();
                 String account = mAccountET.getText().toString();
                 String pwd = mPwdET.getText().toString();
+                if (TextUtils.isEmpty(platform)) {
+                    Toast.makeText(AddActivity.this, "平台名称不能为空，可填入\"谷歌\"等", Toast.LENGTH_SHORT).show();
+                    mPlatformET.requestFocus();
+                    showKeyboard(v);
+                    return;
+                }
                 if (TextUtils.isEmpty(account)) {
                     Toast.makeText(AddActivity.this, "账号不能为空", Toast.LENGTH_SHORT).show();
                     mAccountET.requestFocus();
@@ -129,9 +139,8 @@ public class AddActivity extends AppCompatActivity {
                     return;
                 }
                 DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwd, System.currentTimeMillis()), false);
-                List<PwdItem> lists = DbHelper.getInstance().getPwdList();
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
-
+                finish();
             }
         });
         mAccountCloseIV.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +152,35 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        mPlatformCloseIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPlatformET.setText("");
+                mPlatformET.requestFocus();
+                showKeyboard(v);
+            }
+        });
+
+        mPlatformET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable edt) {
+                int length = mPlatformET.getText().toString().length();
+                if (length == 0) {
+                    mPlatformCloseIV.setVisibility(View.GONE);
+                } else {
+                    mPlatformCloseIV.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         InputFilter contentFilter = new InputFilter() {
             @Override

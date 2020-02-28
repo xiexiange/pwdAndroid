@@ -17,10 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.autox.password.R;
+import com.autox.password.localdata.database.DbHelper;
+import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.views.RefreshScrollView;
 import com.autox.password.views.recyclerviews.entities.ListEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryFrameLayout extends Fragment implements RefreshScrollView.RefreshListener
 {
@@ -70,8 +73,11 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ((RecyclerViewHolder)holder).titleTV.setText(mEntities.get(position).name());
+            String name = mEntities.get(position).name();
+            ((RecyclerViewHolder)holder).titleTV.setText(name);
             ((RecyclerViewHolder)holder).iconIV.setImageResource(mEntities.get(position).drawableId());
+            List<PwdItem> items = DbHelper.getInstance().getPwdSizeByType(name);
+            ((RecyclerViewHolder)holder).numberTV.setText("" + items.size());
         }
 
         @Override
@@ -82,10 +88,12 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
         private class RecyclerViewHolder extends RecyclerView.ViewHolder {
             private ImageView iconIV;
             private TextView titleTV;
+            private TextView numberTV;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 iconIV = itemView.findViewById(R.id.item_icon);
                 titleTV = itemView.findViewById(R.id.item_title);
+                numberTV = itemView.findViewById(R.id.item_number);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

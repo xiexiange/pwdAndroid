@@ -25,7 +25,20 @@
         android:text="账号"
         android:layout_marginLeft="14dp"/>
 
+    <TextView
+        android:id="@+id/item_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cate_item_arrow_right"
+        android:text="0"
+        android:textSize="16sp"
+        android:layout_marginRight="6dp"
+        />
+
     <ImageView
+        android:id="@+id/cate_item_arrow_right"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
