@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.autox.password.AddActivity;
 import com.autox.password.R;
+import com.autox.password.utils.Constant;
 import com.autox.password.views.recyclerviews.entities.ListEntity;
 
 import java.util.ArrayList;
@@ -68,28 +69,28 @@ public class AddFrameLayout extends Fragment
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AddActivity.TYPE type = AddActivity.TYPE.GAME;
+                        Constant.CATEGORY_TYPE type = Constant.CATEGORY_TYPE.GAME;
                         switch (titleTV.getText().toString()) {
                             case "工作":
-                                type = AddActivity.TYPE.WORK;
+                                type = Constant.CATEGORY_TYPE.WORK;
                                 break;
                             case "视频":
-                                type = AddActivity.TYPE.VIDEO;
+                                type = Constant.CATEGORY_TYPE.VIDEO;
                                 break;
                             case "邮箱":
-                                type = AddActivity.TYPE.MAIL;
+                                type = Constant.CATEGORY_TYPE.MAIL;
                                 break;
                             case "金融":
-                                type = AddActivity.TYPE.MONEY;
+                                type = Constant.CATEGORY_TYPE.MONEY;
                                 break;
                             case "网址":
-                                type = AddActivity.TYPE.WEB;
+                                type = Constant.CATEGORY_TYPE.WEB;
                                 break;
                             case "其它":
-                                type = AddActivity.TYPE.OTHER;
+                                type = Constant.CATEGORY_TYPE.OTHER;
                                 break;
                         }
-                        AddActivity.start(getActivity(), type);
+                        AddActivity.start(getActivity(), type, "","", "");
                     }
                 });
             }

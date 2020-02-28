@@ -17,10 +17,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
+import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 import java.util.ArrayList;
@@ -28,8 +30,13 @@ import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
-    public enum TYPE {WORK, VIDEO, MAIL, MONEY, GAME, WEB, OTHER}
-    private TYPE mType;
+    private static final String EXTRA_PLATFORM = "platform";
+    private static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_PWD = "pwd";
+    private Constant.CATEGORY_TYPE mType;
+    private String mPlatFormPassIn;
+    private String mAccountPassIn;
+    private String mPwdPassIn;
     private ImageView mIconIV;
     private TextView mTitleTV;
     private EditText mAccountET;
@@ -46,14 +53,20 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTranslucentStatus(this);
         setContentView(R.layout.activity_add);
-        mType = (TYPE) getIntent().getSerializableExtra(EXTRA_TYPE);
+        mType = (Constant.CATEGORY_TYPE) getIntent().getSerializableExtra(EXTRA_TYPE);
+        mAccountPassIn = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mPlatFormPassIn = getIntent().getStringExtra(EXTRA_PLATFORM);
+        mPwdPassIn = getIntent().getStringExtra(EXTRA_PWD);
         initViews();
         bindEvents();
     }
 
-    public static void start(Context context, TYPE type) {
+    public static void start(Context context, Constant.CATEGORY_TYPE type, @NonNull String platform, @NonNull String account, @NonNull String Pwd) {
         Intent intent = new Intent(context, AddActivity.class);
         intent.putExtra(EXTRA_TYPE, type);
+        intent.putExtra(EXTRA_PLATFORM, platform);
+        intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_PWD, Pwd);
         context.startActivity(intent);
     }
 
@@ -68,6 +81,15 @@ public class AddActivity extends AppCompatActivity {
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
+        if (!TextUtils.isEmpty(mAccountPassIn)) {
+            mAccountET.setText(mAccountPassIn);
+            mPlatformET.setText(mPlatFormPassIn);
+            mPlatformET.setEnabled(false);
+            mAccountET.setEnabled(false);
+            mPwdET.setText(mPwdPassIn);
+            mPlatformET.requestFocus();
+            mPlatformET.clearFocus();
+        }
         int imageId;
         switch (mType) {
             case WORK:

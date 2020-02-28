@@ -150,6 +150,14 @@ public class CategoryListActivity extends AppCompatActivity {
             String account = tmpItem.account();
             ((RecyclerViewHolder)holder).platformTv.setText(platform);
             ((RecyclerViewHolder)holder).accountTv.setText(account);
+
+            ((RecyclerViewHolder)holder).mRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AddActivity.start(CategoryListActivity.this, mType, platform, account, tmpItem.pwd());
+
+                }
+            });
         }
 
         @Override
@@ -158,18 +166,14 @@ public class CategoryListActivity extends AppCompatActivity {
         }
 
         private class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            private View mRoot;
             private TextView platformTv;
             private TextView accountTv;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
+                mRoot = itemView;
                 platformTv = itemView.findViewById(R.id.item_category_platform);
                 accountTv = itemView.findViewById(R.id.item_category_account);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        CategoryListActivity.start(getActivity(), titleTV.getText().toString());
-                    }
-                });
             }
         }
     }
