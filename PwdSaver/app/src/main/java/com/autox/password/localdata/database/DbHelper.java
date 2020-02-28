@@ -72,9 +72,16 @@ public class DbHelper extends SQLiteOpenHelper {
             uploadInt = 1;
         }
         SQLiteDatabase db = getWritableDatabase();
-        String sql = "select * from " + DB_NAME_PWD + " where saveTime=" + item.saveTime();
+        String sql = "select * from " + DB_NAME_PWD + " where platform=\"" + item.platform() + "\" and account=\"" + item.account() + "\"";
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                if (item.pwd().equals(cursor.getString(4))) {
+                    db.close();
+                    return;
+                }
+            }
+            update(db, item);
             db.close();
             return;
         }
@@ -129,7 +136,8 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("platform", item.platform() + "");
         values.put("account", item.account() + "");
         values.put("pwd", item.pwd() + "");
-        db.update(DB_NAME_PWD, values, "saveTime=?", new String[]{item.saveTime() + ""});
+        values.put("upload", 0);
+        db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
 
 
