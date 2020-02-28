@@ -96,39 +96,38 @@
         app:layout_constraintTop_toBottomOf="@+id/add_page_title_wrapper"
         android:layout_marginTop="20dp">
 
+        <ImageView
+            android:id="@+id/add_page_platform_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/platform_icon_alipay"/>
         <TextView
-            android:id="@+id/add_page_platform_title"
+            android:id="@+id/add_page_platform_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="20dp"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:text="平台"/>
-        <EditText
-            android:id="@+id/add_page_platform_content"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/add_page_platform_title"
-            android:layout_marginLeft="30dp"
+            app:layout_constraintRight_toRightOf="parent"
             android:lines="1"
             android:ellipsize="end"
-            android:hint="google"
-            android:textSize="14sp"
-            android:background="@null"/>
+            android:text="支付宝"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="#333333"/>
         <ImageView
-            android:id="@+id/add_page_clear_platform"
+            android:id="@+id/add_page_platform_arrow_right"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/add_page_platform_content"
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_clear"
-            android:visibility="gone"
+            android:src="@drawable/icon_arrow_right"
+            android:layout_marginRight="40dp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

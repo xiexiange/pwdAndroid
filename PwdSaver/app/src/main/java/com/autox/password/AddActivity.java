@@ -41,8 +41,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView mTitleTV;
     private EditText mAccountET;
     private ImageView mAccountCloseIV;
-    private EditText mPlatformET;
-    private ImageView mPlatformCloseIV;
+    private TextView mPlatformTV;
     private EditText mPwdET;
     private ImageView mPwdCloseIV;
     String mTitle = "其它";
@@ -75,20 +74,16 @@ public class AddActivity extends AppCompatActivity {
         mTitleTV = findViewById(R.id.add_page_detail_title);
         mBackRL = findViewById(R.id.add_page_back_wrapper);
         mSaveTV = findViewById(R.id.add_page_save_btn);
-        mPlatformET = findViewById(R.id.add_page_platform_content);
-        mPlatformCloseIV = findViewById(R.id.add_page_clear_platform);
+        mPlatformTV = findViewById(R.id.add_page_platform_content);
         mAccountET = findViewById(R.id.add_page_account_content);
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
         if (!TextUtils.isEmpty(mAccountPassIn)) {
             mAccountET.setText(mAccountPassIn);
-            mPlatformET.setText(mPlatFormPassIn);
-            mPlatformET.setEnabled(false);
+            mPlatformTV.setText(mPlatFormPassIn);
             mAccountET.setEnabled(false);
             mPwdET.setText(mPwdPassIn);
-            mPlatformET.requestFocus();
-            mPlatformET.clearFocus();
         }
         int imageId;
         switch (mType) {
@@ -139,13 +134,11 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String type = mTitle;
-                String platform = mPlatformET.getText().toString();
+                String platform = mPlatformTV.getText().toString();
                 String account = mAccountET.getText().toString();
                 String pwd = mPwdET.getText().toString();
                 if (TextUtils.isEmpty(platform)) {
-                    Toast.makeText(AddActivity.this, "平台名称不能为空，可填入\"谷歌\"等", Toast.LENGTH_SHORT).show();
-                    mPlatformET.requestFocus();
-                    showKeyboard(v);
+                    Toast.makeText(AddActivity.this, "平台名称不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(account)) {
@@ -171,36 +164,6 @@ public class AddActivity extends AppCompatActivity {
                 mAccountET.setText("");
                 mAccountET.requestFocus();
                 showKeyboard(v);
-            }
-        });
-
-        mPlatformCloseIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPlatformET.setText("");
-                mPlatformET.requestFocus();
-                showKeyboard(v);
-            }
-        });
-
-        mPlatformET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable edt) {
-                int length = mPlatformET.getText().toString().length();
-                if (length == 0) {
-                    mPlatformCloseIV.setVisibility(View.GONE);
-                } else {
-                    mPlatformCloseIV.setVisibility(View.VISIBLE);
-                }
             }
         });
 
