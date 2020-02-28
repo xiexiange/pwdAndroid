@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.autox.password.CategoryListActivity;
 import com.autox.password.R;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
@@ -97,7 +98,7 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "clicked: " + titleTV.getText(), Toast.LENGTH_SHORT).show();
+                        CategoryListActivity.start(getActivity(), titleTV.getText().toString());
                     }
                 });
             }
