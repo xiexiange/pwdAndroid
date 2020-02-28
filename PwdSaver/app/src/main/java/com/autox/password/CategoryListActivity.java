@@ -3,29 +3,43 @@ package com.autox.password;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.autox.password.localdata.database.DbHelper;
+import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CategoryListActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
+
+    private List<PwdItem> mPwdItemList = new ArrayList<>();
     private Constant.CATEGORY_TYPE mType;
     private TextView mTitleTV;
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mEditTV;
+    private RecyclerView mRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTranslucentStatus(this);
         setContentView(R.layout.activity_category_list);
         mType = (Constant.CATEGORY_TYPE) getIntent().getSerializableExtra(EXTRA_TYPE);
+        initData();
         initViews();
         bindEvents();
     }
@@ -63,10 +77,8 @@ public class CategoryListActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    private void initViews() {
-        mTitleTV = findViewById(R.id.list_page_title);
-        mBackRL = findViewById(R.id.list_page_back_wrapper);
-        mEditTV = findViewById(R.id.list_page_edit_btn);
+    private void initData() {
+
         switch (mType) {
             case WORK:
                 mTitle = "工作";
@@ -91,8 +103,17 @@ public class CategoryListActivity extends AppCompatActivity {
                 mTitle = "其它";
                 break;
         }
-        mTitleTV.setText(mTitle);
+        mPwdItemList = DbHelper.getInstance().getPwdSizeByType(mTitle);
+    }
 
+    private void initViews() {
+        mTitleTV = findViewById(R.id.list_page_title);
+        mBackRL = findViewById(R.id.list_page_back_wrapper);
+        mEditTV = findViewById(R.id.list_page_edit_btn);
+        mRecyclerView = findViewById(R.id.list_rv_wrapper);
+        mTitleTV.setText(mTitle);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setAdapter(new RecyclerViewAdapter());
     }
 
     private void bindEvents() {
@@ -111,6 +132,46 @@ public class CategoryListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private class RecyclerViewAdapter extends RecyclerView.Adapter {
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(CategoryListActivity.this).inflate(R.layout.item_category_list, parent, false);
+            return new RecyclerViewAdapter.RecyclerViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            PwdItem tmpItem = mPwdItemList.get(position);
+            String platform = tmpItem.platform();
+            String account = tmpItem.account();
+            ((RecyclerViewHolder)holder).platformTv.setText(platform);
+            ((RecyclerViewHolder)holder).accountTv.setText(account);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mPwdItemList.size();
+        }
+
+        private class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            private TextView platformTv;
+            private TextView accountTv;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                platformTv = itemView.findViewById(R.id.item_category_platform);
+                accountTv = itemView.findViewById(R.id.item_category_account);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        CategoryListActivity.start(getActivity(), titleTV.getText().toString());
+                    }
+                });
+            }
+        }
     }
 
     private void showKeyboard(View v) {
