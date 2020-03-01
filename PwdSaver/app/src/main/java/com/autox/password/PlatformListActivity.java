@@ -23,7 +23,9 @@ import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlatformListActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
@@ -239,4 +241,51 @@ public class PlatformListActivity extends AppCompatActivity {
         }
     }
 
+    public static int getDrawableIdByName(String name) {
+        Map<String, Integer> result = new HashMap<>();
+
+        result.put("邮箱", R.drawable.platform_icon_mail);
+        result.put("电脑开机", R.drawable.platform_icon_shutdown);
+        result.put("爱奇艺视频", R.drawable.platform_icon_iqiyi);
+        result.put("优酷视频", R.drawable.platform_icon_youku);
+        result.put("搜狐视频", R.drawable.platform_icon_souhu);
+        result.put("土豆视频", R.drawable.platform_icon_tudou);
+        result.put("乐视TV", R.drawable.platform_icon_letv);
+        result.put("芒果", R.drawable.platform_icon_mango);
+        result.put("快手", R.drawable.platform_icon_kuaishou);
+        result.put("抖音", R.drawable.platform_icon_yin);
+        result.put("斗鱼", R.drawable.platform_icon_douyu);
+        result.put("虎牙", R.drawable.platform_icon_huya);
+        result.put("QQ邮箱", R.drawable.platform_icon_qqmail);
+        result.put("谷歌邮箱", R.drawable.platform_icon_googlemail);
+        result.put("微软邮箱", R.drawable.platform_icon_micro);
+        result.put("雅虎邮箱", R.drawable.platform_icon_yahu);
+        result.put("新浪邮箱", R.drawable.platform_icon_sinamail);
+        result.put("网易邮箱", R.drawable.platform_icon_163);
+        result.put("139邮箱", R.drawable.platform_icon_139);
+        result.put("招商银行(需要密码保护)", R.drawable.platform_icon_zhaoshang);
+        result.put("建设银行(需要密码保护)", R.drawable.platform_icon_jianshe);
+        result.put("农业银行(需要密码保护)", R.drawable.platform_icon_nongye);
+        result.put("中国银行(需要密码保护)", R.drawable.platform_icon_zhongguo);
+        result.put("工商银行(需要密码保护)", R.drawable.platform_icon_gongshang);
+        result.put("浦发银行(需要密码保护)", R.drawable.platform_icon_pufa);
+        result.put("广发银行(需要密码保护)", R.drawable.platform_icon_guangfa);
+        result.put("信用社(需要密码保护)", R.drawable.platform_icon_xinyongshe);
+        result.put("邮政储蓄(需要密码保护)", R.drawable.platform_icon_youzheng);
+        result.put("本地银行(需要密码保护)", R.drawable.platform_icon_localbank);
+        result.put("手机游戏", R.drawable.platform_icon_mobilegame);
+        result.put("电脑游戏", R.drawable.platform_icon_pcgame);
+        result.put("PS游戏", R.drawable.platform_icon_psgame);
+        result.put("VR游戏", R.drawable.platform_icon_vrgame);
+        result.put("谷歌", R.drawable.platform_icon_google);
+        result.put("百度", R.drawable.platform_icon_baidu);
+        result.put("Facebook", R.drawable.platform_icon_facebook);
+        result.put("Twitter", R.drawable.platform_icon_twitter);
+        result.put("新浪", R.drawable.platform_icon_sina);
+        result.put("美团", R.drawable.platform_icon_meituan);
+        result.put("饿了么", R.drawable.platform_icon_eleme);
+        result.put("58同城", R.drawable.platform_icon_58);
+        result.put("其它", R.drawable.platform_icon_other);
+        return result.get(name);
+    }
 }

@@ -49,6 +49,7 @@ public class AddActivity extends AppCompatActivity {
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
     private ConstraintLayout mPlatformWrapper;
+    private ImageView mPlatformImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,44 +82,64 @@ public class AddActivity extends AppCompatActivity {
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
-        mPlatformWrapper =findViewById(R.id.add_page_platform_wrapper);
-        if (!TextUtils.isEmpty(mAccountPassIn)) {
-            mAccountET.setText(mAccountPassIn);
-            mPlatformTV.setText(mPlatFormPassIn);
-            mAccountET.setEnabled(false);
-            mPwdET.setText(mPwdPassIn);
-        }
+        mPlatformWrapper = findViewById(R.id.add_page_platform_wrapper);
+        mPlatformImage = findViewById(R.id.add_page_platform_image);
         int imageId;
+        String platName = "";
+        int drawable = R.drawable.platform_icon_other;
         switch (mType) {
             case WORK:
                 mTitle = "工作";
                 imageId = R.drawable.icon_work;
+                platName = "邮箱";
+                drawable = R.drawable.platform_icon_mail;
                 break;
             case VIDEO:
                 mTitle = "视频";
                 imageId = R.drawable.icon_video;
+                drawable = R.drawable.platform_icon_iqiyi;
+                platName = "爱奇艺视频";
                 break;
             case MAIL:
                 mTitle = "邮箱";
                 imageId = R.drawable.icon_mail;
+                drawable = R.drawable.platform_icon_qqmail;
+                platName = "QQ邮箱";
                 break;
             case MONEY:
                 mTitle = "金融";
                 imageId = R.drawable.icon_wallet;
+                drawable = R.drawable.platform_icon_zhaoshang;
+                platName = "招商银行(需要密码保护)";
                 break;
             case GAME:
                 mTitle = "游戏";
                 imageId = R.drawable.icon_game;
+                drawable = R.drawable.platform_icon_mobilegame;
+                platName = "手机游戏";
                 break;
             case WEB:
                 mTitle = "网址";
                 imageId = R.drawable.icon_web;
+                drawable = R.drawable.platform_icon_google;
+                platName = "谷歌";
                 break;
             case OTHER:
             default:
                 mTitle = "其它";
                 imageId = R.drawable.icon_other;
+                platName = "其它";
                 break;
+        }
+        if (!TextUtils.isEmpty(mAccountPassIn)) {
+            mAccountET.setText(mAccountPassIn);
+            mPlatformTV.setText(mPlatFormPassIn);
+            mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPlatFormPassIn));
+            mAccountET.setEnabled(false);
+            mPwdET.setText(mPwdPassIn);
+        } else {
+            mPlatformTV.setText(platName);
+            mPlatformImage.setImageResource(drawable);
         }
         mIconIV.setImageResource(imageId);
         mTitleTV.setText(mTitle);
