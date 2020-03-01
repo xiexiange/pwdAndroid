@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -330,14 +331,24 @@ public class AddActivity extends AppCompatActivity {
         mPlatformWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                PlatformListActivity.start(AddActivity.this, mType);
-
                 Intent intent = new Intent(AddActivity.this, PlatformListActivity.class);
                 intent.putExtra(EXTRA_TYPE, mType);
                 startActivityForResult(intent, 1001);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1001:
+                String resultName = data.getStringExtra("result");
+                int drawable = PlatformListActivity.getDrawableIdByName(resultName);
+                mPlatformTV.setText(resultName);
+                mPlatformImage.setImageResource(drawable);
+        }
     }
 
     private void showKeyboard(View v) {

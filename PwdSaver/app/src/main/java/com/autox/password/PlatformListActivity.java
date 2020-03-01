@@ -200,7 +200,10 @@ public class PlatformListActivity extends AppCompatActivity {
             ((RecyclerViewHolder)holder).mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PlatformListActivity.this, "点击了:" + platform, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("result", platform);
+                    setResult(1001, intent);
+                    finish();
                 }
             });
         }
