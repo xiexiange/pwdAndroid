@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
@@ -47,6 +48,7 @@ public class AddActivity extends AppCompatActivity {
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
+    private ConstraintLayout mPlatformWrapper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,7 @@ public class AddActivity extends AppCompatActivity {
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
+        mPlatformWrapper =findViewById(R.id.add_page_platform_wrapper);
         if (!TextUtils.isEmpty(mAccountPassIn)) {
             mAccountET.setText(mAccountPassIn);
             mPlatformTV.setText(mPlatFormPassIn);
@@ -300,6 +303,17 @@ public class AddActivity extends AppCompatActivity {
                 } else {
                     mPwdCloseIV.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        mPlatformWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                PlatformListActivity.start(AddActivity.this, mType);
+
+                Intent intent = new Intent(AddActivity.this, PlatformListActivity.class);
+                intent.putExtra(EXTRA_TYPE, mType);
+                startActivityForResult(intent, 1001);
             }
         });
 
