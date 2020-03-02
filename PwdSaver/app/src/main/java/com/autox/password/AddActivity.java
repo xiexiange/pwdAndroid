@@ -138,6 +138,7 @@ public class AddActivity extends AppCompatActivity {
             mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPlatFormPassIn));
             mAccountET.setEnabled(false);
             mPwdET.setText(mPwdPassIn);
+            findViewById(R.id.add_page_platform_arrow_right).setVisibility(View.INVISIBLE);
         } else {
             mPlatformTV.setText(platName);
             mPlatformImage.setImageResource(drawable);
@@ -331,6 +332,9 @@ public class AddActivity extends AppCompatActivity {
         mPlatformWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!TextUtils.isEmpty(mAccountPassIn)) {
+                    return;
+                }
                 Intent intent = new Intent(AddActivity.this, PlatformListActivity.class);
                 intent.putExtra(EXTRA_TYPE, mType);
                 startActivityForResult(intent, 1001);
@@ -342,6 +346,9 @@ public class AddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
         switch (requestCode) {
             case 1001:
                 String resultName = data.getStringExtra("result");

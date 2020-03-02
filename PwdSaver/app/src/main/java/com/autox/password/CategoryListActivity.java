@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -150,6 +151,7 @@ public class CategoryListActivity extends AppCompatActivity {
             String account = tmpItem.account();
             ((RecyclerViewHolder)holder).platformTv.setText(platform);
             ((RecyclerViewHolder)holder).accountTv.setText(account);
+            ((RecyclerViewHolder)holder).icon.setImageResource(PlatformListActivity.getDrawableIdByName(platform));
 
             ((RecyclerViewHolder)holder).mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,11 +171,13 @@ public class CategoryListActivity extends AppCompatActivity {
             private View mRoot;
             private TextView platformTv;
             private TextView accountTv;
+            private ImageView icon;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mRoot = itemView;
                 platformTv = itemView.findViewById(R.id.item_category_platform);
                 accountTv = itemView.findViewById(R.id.item_category_account);
+                icon = itemView.findViewById(R.id.add_icon);
             }
         }
     }
