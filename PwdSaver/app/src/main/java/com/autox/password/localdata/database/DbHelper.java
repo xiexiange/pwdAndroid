@@ -54,7 +54,7 @@ public class DbHelper extends SQLiteOpenHelper {
         //  prayTime: text
         //  prayIng: text
         Log.e(DbHelper.class.getName(), "Echo , onCreate");
-        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, upload Integer)");
+        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, deleted Integer, upload Integer)");
         SharedPrefUtils.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
     }
 
@@ -63,6 +63,16 @@ public class DbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("upload", 1);
         db.update(DB_NAME_PWD, values, "saveTime=?", new String[]{time});
+        db.close();
+    }
+
+    public void setDeleted(PwdItem item) {
+        SQLiteDatabase db = getWritableDatabase();
+//        String sql = "update table " + DB_NAME_PWD + " set deleted=" + 1 + " where platform=\"" + item.platform() + "\" and account=\"" + item.account() + "\"";
+//        db.delete(DB_NAME_PWD, "platform=? and account=?", new String[]{item.platform(), item.account()});
+        ContentValues values = new ContentValues();
+        values.put("deleted", 1);
+        db.update(DB_NAME_PWD, values, "platform=? and account=?", new String[]{item.platform(), item.account()});
         db.close();
     }
 
@@ -92,6 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("pwd", item.pwd() + "");
         values.put("saveTime", item.saveTime() + "");
         values.put("upload", uploadInt);
+        values.put("deleted", 0);
         db.insert(DB_NAME_PWD, null, values);
         db.close();
     }
@@ -116,7 +127,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<PwdItem> getPwdSizeByType(String type) {
         List<PwdItem> items = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD + " where type=\"" + type + "\"", new String[]{});
+        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD + " where type=\"" + type + "\" and deleted=0" , new String[]{});
         while (cursor.moveToNext()) {
             PwdItem item = new PwdItem(
                     cursor.getString(1),

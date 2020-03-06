@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         mCategoryTab.performClick();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTabChanged(EventTabClicked tabClicked) {
         Fragment fragment = new Fragment();

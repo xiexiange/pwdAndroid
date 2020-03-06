@@ -16,10 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +137,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
             }
         });
+        EventBus.getDefault().register(this);
 
     }
 
@@ -160,6 +166,13 @@ public class CategoryListActivity extends AppCompatActivity {
 
                 }
             });
+            ((RecyclerViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DbHelper.getInstance().setDeleted(tmpItem);
+                    EventBus.getDefault().post(new DbChanged());
+                }
+            });
         }
 
         @Override
@@ -172,14 +185,22 @@ public class CategoryListActivity extends AppCompatActivity {
             private TextView platformTv;
             private TextView accountTv;
             private ImageView icon;
+            private TextView delete;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mRoot = itemView;
                 platformTv = itemView.findViewById(R.id.item_category_platform);
                 accountTv = itemView.findViewById(R.id.item_category_account);
                 icon = itemView.findViewById(R.id.add_icon);
+                delete = itemView.findViewById(R.id.item_category_delete);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void showKeyboard(View v) {
@@ -187,4 +208,9 @@ public class CategoryListActivity extends AppCompatActivity {
         if (manager != null) manager.showSoftInput(v, 0);
     }
 
+
+    @Subscribe(threadMode=ThreadMode.MAIN)
+    public void dbChanged(DbChanged changed) {
+        recreate();
+    }
 }

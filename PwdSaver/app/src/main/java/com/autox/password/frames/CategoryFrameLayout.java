@@ -1,5 +1,6 @@
 package com.autox.password.frames;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.autox.password.CategoryListActivity;
 import com.autox.password.R;
+import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.views.RefreshScrollView;
 import com.autox.password.views.recyclerviews.entities.ListEntity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,7 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
     private View mRoot;
     private RecyclerView mRecyclerView;
     ArrayList<ListEntity> mEntities = new ArrayList<>();
+    private RecyclerView.Adapter mAdapter;
 
     @Nullable
     @Override
@@ -39,9 +46,22 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
         mRoot = inflater.inflate(R.layout.frame_category, null);
         mRecyclerView = mRoot.findViewById(R.id.category_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        RecyclerView.Adapter adapter = new RecyclerViewAdapter();
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new RecyclerViewAdapter();
+        mRecyclerView.setAdapter(mAdapter);
         return mRoot;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -125,5 +145,10 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
         mEntities.add(new ListEntity("游戏", R.drawable.icon_game));
         mEntities.add(new ListEntity("网址", R.drawable.icon_web));
         mEntities.add(new ListEntity("其它", R.drawable.icon_other));
+    }
+
+    @Subscribe (threadMode=ThreadMode.MAIN)
+    public void dbChanged(DbChanged changed) {
+        mAdapter.notifyDataSetChanged();
     }
 }
