@@ -171,7 +171,7 @@ public class CategoryListActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             PwdItem tmpItem = mPwdItemList.get(position);
             String platform = tmpItem.platform();
-            String account = tmpItem.account();
+            String account = dataMasking(tmpItem.account());
             ((RecyclerViewHolder)holder).platformTv.setText(platform);
             ((RecyclerViewHolder)holder).accountTv.setText(account);
             ((RecyclerViewHolder)holder).icon.setImageResource(PlatformListActivity.getDrawableIdByName(platform));
@@ -244,6 +244,26 @@ public class CategoryListActivity extends AppCompatActivity {
         });
         builder.create().show();
 
+    }
+
+    private String dataMasking(String account) {
+        String result;
+        int length = account.length();
+        int showAccount = 0;
+        if (length >= 9) {
+            showAccount = 3;
+        } else if (length >= 7) {
+            showAccount = 2;
+        } else {
+            return account;
+        }
+        String pre = account.substring(0, showAccount);
+        String last = account.substring(length - showAccount, length);
+        for (int i = showAccount; i < length - showAccount - 1; i++) {
+            pre += "*";
+        }
+        result = pre + last;
+        return result;
     }
 
     @Subscribe(threadMode=ThreadMode.MAIN)
