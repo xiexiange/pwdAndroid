@@ -47,7 +47,7 @@
         android:layout_marginRight="10dp"
         android:src="@drawable/icon_arrow_right"/>
 
-    <TextView
+    <com.autox.password.views.EventTextView
         android:id="@+id/item_category_delete"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,5 +58,6 @@
         android:text="删除"
         android:textSize="16sp"
         android:gravity="center"
-        android:textColor="#ff0000"/>
+        android:textColor="#ff0000"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

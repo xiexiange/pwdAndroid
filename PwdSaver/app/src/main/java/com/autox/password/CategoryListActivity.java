@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.autox.password.event.entity.DbChanged;
+import com.autox.password.event.entity.EventEditClicked;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.utils.Constant;
+import com.autox.password.views.EventTextView;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +41,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private RelativeLayout mBackRL;
     private TextView mEditTV;
     private RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,8 +136,7 @@ public class CategoryListActivity extends AppCompatActivity {
         mEditTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String type = mTitle;
-
+                EventBus.getDefault().post(new EventEditClicked());
             }
         });
         EventBus.getDefault().register(this);
@@ -163,7 +165,6 @@ public class CategoryListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     AddActivity.start(CategoryListActivity.this, mType, platform, account, tmpItem.pwd());
-
                 }
             });
             ((RecyclerViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +174,8 @@ public class CategoryListActivity extends AppCompatActivity {
                     EventBus.getDefault().post(new DbChanged());
                 }
             });
+
+            EventBus.getDefault().register(holder);
         }
 
         @Override
@@ -185,7 +188,7 @@ public class CategoryListActivity extends AppCompatActivity {
             private TextView platformTv;
             private TextView accountTv;
             private ImageView icon;
-            private TextView delete;
+            private EventTextView delete;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mRoot = itemView;
@@ -194,6 +197,13 @@ public class CategoryListActivity extends AppCompatActivity {
                 icon = itemView.findViewById(R.id.add_icon);
                 delete = itemView.findViewById(R.id.item_category_delete);
             }
+
+            @Subscribe(threadMode = ThreadMode.MAIN)
+            public void toggle(EventEditClicked clicked) {
+                boolean result = delete.isShown();
+                delete.setVisibility(result ? View.GONE : View.VISIBLE);
+            }
+
         }
     }
 
