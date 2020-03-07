@@ -22,10 +22,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +184,7 @@ public class AddActivity extends AppCompatActivity {
                 }
                 DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwd, System.currentTimeMillis()), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new EventGoMainPage());
                 finish();
             }
         });

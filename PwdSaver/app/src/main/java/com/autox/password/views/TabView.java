@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.autox.password.R;
-import com.autox.password.event.entity.EventTabClicked;
+import com.autox.password.event.entity.EventSelectTab;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,20 +55,22 @@ public class TabView extends ConstraintLayout {
         root.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventTabClicked(mTitleTv.getText().toString()));
-                mTitleTv.setTextColor(Color.parseColor("#ffffff"));
-                mImageView.setBackground(drawableSelected);
-                setSelected(true);
+                EventBus.getDefault().post(new EventSelectTab(mTitleTv.getText().toString()));
             }
         });
         EventBus.getDefault().register(this);
     }
 
     @Subscribe(threadMode=ThreadMode.MAIN)
-    public void onTabSelected(EventTabClicked eventTabClicked) {
+    public void onResetTab(EventSelectTab eventSelectTab) {
         setSelected(false);
         mTitleTv.setTextColor(Color.parseColor("#333333"));
         mImageView.setBackground(drawableUnselected);
+        if (mTitleTv.getText().equals(eventSelectTab.getText())) {
+            mTitleTv.setTextColor(Color.parseColor("#ffffff"));
+            mImageView.setBackground(drawableSelected);
+            setSelected(true);
+        }
     }
 
 }

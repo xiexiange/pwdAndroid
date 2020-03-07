@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
-import com.autox.password.event.entity.EventTabClicked;
+import com.autox.password.event.entity.EventGoMainPage;
+import com.autox.password.event.entity.EventSelectTab;
 import com.autox.password.frames.AddFrameLayout;
 import com.autox.password.frames.CategoryFrameLayout;
 import com.autox.password.frames.MeFrameLayout;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTabChanged(EventTabClicked tabClicked) {
+    public void onTabChanged(EventSelectTab tabClicked) {
         Fragment fragment = new Fragment();
         if (mCurrentTabTitle.equals(tabClicked.getText())) {
             return;
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
         mCurrentTabTitle = tabClicked.getText();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment)
                 .commitAllowingStateLoss();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void goMainPage(EventGoMainPage goMainPage) {
+        mCategoryTab.performClick();
     }
 
 
