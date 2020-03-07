@@ -115,6 +115,16 @@ public class CategoryListActivity extends AppCompatActivity {
         mPwdItemList = DbHelper.getInstance().getPwdSizeByType(mTitle);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mEditTV.getVisibility() == View.GONE) {
+            mEditTV.setVisibility(View.VISIBLE);
+            EventBus.getDefault().post(new EventEditClicked(true));
+            return;
+        }
+        super.onBackPressed();
+    }
+
     private void initViews() {
         mTitleTV = findViewById(R.id.list_page_title);
         mBackRL = findViewById(R.id.list_page_back_wrapper);
@@ -136,7 +146,8 @@ public class CategoryListActivity extends AppCompatActivity {
         mEditTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventEditClicked());
+                mEditTV.setVisibility(View.GONE);
+                EventBus.getDefault().post(new EventEditClicked(true));
             }
         });
         EventBus.getDefault().register(this);
