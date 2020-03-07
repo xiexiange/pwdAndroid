@@ -174,8 +174,6 @@ public class CategoryListActivity extends AppCompatActivity {
                     EventBus.getDefault().post(new DbChanged());
                 }
             });
-
-            EventBus.getDefault().register(holder);
         }
 
         @Override
@@ -197,13 +195,6 @@ public class CategoryListActivity extends AppCompatActivity {
                 icon = itemView.findViewById(R.id.add_icon);
                 delete = itemView.findViewById(R.id.item_category_delete);
             }
-
-            @Subscribe(threadMode = ThreadMode.MAIN)
-            public void toggle(EventEditClicked clicked) {
-                boolean result = delete.isShown();
-                delete.setVisibility(result ? View.GONE : View.VISIBLE);
-            }
-
         }
     }
 
