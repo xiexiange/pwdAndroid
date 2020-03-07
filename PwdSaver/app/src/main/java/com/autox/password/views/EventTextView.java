@@ -40,7 +40,6 @@ public class EventTextView extends TextView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void toggle(EventEditClicked clicked) {
-        int visible = getVisibility();
-        setVisibility(visible == View.VISIBLE ? View.GONE : View.VISIBLE);
+        setVisibility(clicked.show ? View.VISIBLE : View.GONE);
     }
 }

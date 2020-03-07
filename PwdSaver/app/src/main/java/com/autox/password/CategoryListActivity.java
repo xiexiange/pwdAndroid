@@ -1,6 +1,8 @@
 package com.autox.password;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private RelativeLayout mBackRL;
     private TextView mEditTV;
     private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mAdatper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +122,7 @@ public class CategoryListActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (mEditTV.getVisibility() == View.GONE) {
             mEditTV.setVisibility(View.VISIBLE);
-            EventBus.getDefault().post(new EventEditClicked(true));
+            EventBus.getDefault().post(new EventEditClicked(false));
             return;
         }
         super.onBackPressed();
@@ -132,7 +135,8 @@ public class CategoryListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.list_rv_wrapper);
         mTitleTV.setText(mTitle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(new RecyclerViewAdapter());
+        mAdatper = new RecyclerViewAdapter();
+        mRecyclerView.setAdapter(mAdatper);
     }
 
     private void bindEvents() {
@@ -184,8 +188,7 @@ public class CategoryListActivity extends AppCompatActivity {
             ((RecyclerViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DbHelper.getInstance().setDeleted(tmpItem);
-                    EventBus.getDefault().post(new DbChanged());
+                    showConfirmDialog(tmpItem);
                 }
             });
         }
@@ -223,9 +226,32 @@ public class CategoryListActivity extends AppCompatActivity {
         if (manager != null) manager.showSoftInput(v, 0);
     }
 
+    private void showConfirmDialog(PwdItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).
+                setTitle("确认删除").
+                setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DbHelper.getInstance().setDeleted(item);
+                EventBus.getDefault().post(new DbChanged());
+            }
+        }).
+                setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create().show();
+
+    }
 
     @Subscribe(threadMode=ThreadMode.MAIN)
     public void dbChanged(DbChanged changed) {
-        recreate();
+        mPwdItemList = DbHelper.getInstance().getPwdSizeByType(mTitle);
+        mAdatper.notifyDataSetChanged();
+        if (mEditTV.getVisibility() == View.GONE) {
+            EventBus.getDefault().post(new EventEditClicked(true));
+        }
     }
 }
