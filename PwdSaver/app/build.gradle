@@ -9,7 +9,6 @@ android {
         targetSdkVersion 29
         versionCode 1000
         versionName "1.0.0.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -26,17 +25,18 @@ android {
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'], excludes: ['Decoder.CEFormatException.class'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation fileTree(dir: 'libs', include: ['*.aar','*.jar'], excludes: ['Decoder.CEFormatException.class'])
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
 }

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.autox.password.R;
 import com.autox.password.event.entity.EventSelectTab;
@@ -52,7 +52,7 @@ public class TabView extends ConstraintLayout {
             mTitleTv.setText(title);
             mImageView.setBackground(drawableUnselected);
         }
-        root.setOnClickListener(new OnClickListener() {
+        root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new EventSelectTab(mTitleTv.getText().toString()));
