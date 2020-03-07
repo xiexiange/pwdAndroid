@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <meta-data
+        android:name="BUGLY_VERSION"
+        android:value="\ 1000_200307"
+        />
     <application
         android:name=".EApplication"
         android:allowBackup="true"
