@@ -175,6 +175,9 @@ public class CategoryListActivity extends AppCompatActivity {
             ((RecyclerViewHolder)holder).mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mEditTV.getVisibility() == View.GONE) {
+                        return;
+                    }
                     AddActivity.start(CategoryListActivity.this, mType, platform, account, tmpItem.pwd());
                 }
             });
