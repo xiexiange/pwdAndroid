@@ -21,7 +21,7 @@
         android:name=".EApplication"
         android:allowBackup="true"
         android:icon="@drawable/pwd_icon"
-        android:label="密码记"
+        android:label="密码帮"
         android:roundIcon="@drawable/pwd_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
