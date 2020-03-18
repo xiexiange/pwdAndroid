@@ -5,4 +5,8 @@
         <attr name="image_default" format="reference"></attr>
         <attr name="image_selected" format="reference"></attr>
     </declare-styleable>
+    <declare-styleable name="ItemViewList">
+        <attr name="item_title" format="string"></attr>
+        <attr name="image" format="reference"></attr>
+    </declare-styleable>
 </resources>
