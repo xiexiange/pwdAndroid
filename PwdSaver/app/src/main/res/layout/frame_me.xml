@@ -31,19 +31,19 @@
     </android.support.constraint.ConstraintLayout>
 
     <com.autox.password.views.ItemViewList
-        android:id="@+id/item_login"
+        android:id="@+id/item_backup"
         app:layout_constraintTop_toBottomOf="@+id/title_wrapper"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_marginTop="20dp"
-        app:item_title="登录"
-        app:image="@drawable/item_list_login"/>
+        app:item_title="备份/恢复"
+        app:image="@drawable/item_list_backup"/>
 
     <com.autox.password.views.ItemViewList
         android:id="@+id/item_clear"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/item_login"
+        app:layout_constraintTop_toBottomOf="@+id/item_backup"
         app:item_title="清除数据"
         app:image="@drawable/item_list_delete"
         />
