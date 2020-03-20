@@ -41,6 +41,8 @@ public class AddActivity extends AppCompatActivity {
     private static final String EXTRA_PLATFORM = "platform";
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_PWD = "pwd";
+    private static final int REQUEST_CODE_SHOW_CLEAR_ACCOUNT = 1000;
+    private static final int REQUEST_CODE_PLATFORM_LIST = 1001;
     private Constant.CATEGORY_TYPE mType;
     private String mPlatFormPassIn;
     private String mAccountPassIn;
@@ -52,6 +54,7 @@ public class AddActivity extends AppCompatActivity {
     private TextView mPlatformTV;
     private EditText mPwdET;
     private ImageView mPwdCloseIV;
+    private TextView mShowClearAccountTv;
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
@@ -91,6 +94,7 @@ public class AddActivity extends AppCompatActivity {
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
         mPlatformWrapper = findViewById(R.id.add_page_platform_wrapper);
         mPlatformImage = findViewById(R.id.add_page_platform_image);
+        mShowClearAccountTv = findViewById(R.id.show_clear_account);
         int imageId;
         String platName = "";
         int drawable = R.drawable.platform_icon_other;
@@ -139,10 +143,14 @@ public class AddActivity extends AppCompatActivity {
                 break;
         }
         if (!TextUtils.isEmpty(mAccountPassIn)) {
+            String account = mAccountPassIn;
             if (SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
-                mAccountPassIn = MaskUtil.mask(mAccountPassIn);
+                account = MaskUtil.mask(mAccountPassIn);
+                if (account.contains("*")) {
+                    mShowClearAccountTv.setVisibility(View.VISIBLE);
+                }
             }
-            mAccountET.setText(mAccountPassIn);
+            mAccountET.setText(account);
             mPlatformTV.setText(mPlatFormPassIn);
             mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPlatFormPassIn));
             mAccountET.setEnabled(false);
@@ -347,7 +355,15 @@ public class AddActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(AddActivity.this, PlatformListActivity.class);
                 intent.putExtra(EXTRA_TYPE, mType);
-                startActivityForResult(intent, 1001);
+                startActivityForResult(intent, REQUEST_CODE_PLATFORM_LIST);
+            }
+        });
+
+        mShowClearAccountTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddActivity.this, PwdVerifyActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SHOW_CLEAR_ACCOUNT);
             }
         });
 
@@ -356,15 +372,21 @@ public class AddActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
         switch (requestCode) {
-            case 1001:
+            case REQUEST_CODE_PLATFORM_LIST:
+                if (data == null) {
+                    return;
+                }
                 String resultName = data.getStringExtra("result");
                 int drawable = PlatformListActivity.getDrawableIdByName(resultName);
                 mPlatformTV.setText(resultName);
                 mPlatformImage.setImageResource(drawable);
+            case REQUEST_CODE_SHOW_CLEAR_ACCOUNT:
+                if (resultCode == PwdVerifyActivity.RESULT_OK) {
+                    mAccountET.setText(mAccountPassIn);
+                    mShowClearAccountTv.setVisibility(View.GONE);
+                }
+                break;
         }
     }
 
