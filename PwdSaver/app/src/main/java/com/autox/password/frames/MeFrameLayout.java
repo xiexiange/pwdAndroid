@@ -78,7 +78,7 @@ public class MeFrameLayout extends Fragment
                         return true;
                     }
                     if (!currentChecked && !TextUtils.isEmpty(localPwd)) {
-                        PwdVerifyActivity.startForResult(MeFrameLayout.this, REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT);
+                        showConfirmRemovePwdDialog();
                         return true;
                     }
                 }
@@ -105,8 +105,29 @@ public class MeFrameLayout extends Fragment
                             DbHelper.getInstance().setDeleted(item);
                         }
                         EventBus.getDefault().post(new DbChanged());
+                        SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
+                        mClearPwdSwitch.setChecked(true);
                         Toast.makeText(getActivity(), "已删除所有数据", Toast.LENGTH_SHORT).show();
                         // todo 可以做个意见反馈
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void showConfirmRemovePwdDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).
+                setTitle("确认明文显示所有账号？")
+                .setMessage("打开开关后，验证密码将被清空，再次关闭时可重新设置")
+                .setPositiveButton("明文所有账号", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PwdVerifyActivity.startForResult(MeFrameLayout.this, REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -134,6 +155,7 @@ public class MeFrameLayout extends Fragment
             case REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT:
                 if (resultCode == PwdVerifyActivity.RESULT_OK) {
                     mClearPwdSwitch.setChecked(true);
+                    SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
                 }
                 break;
         }
