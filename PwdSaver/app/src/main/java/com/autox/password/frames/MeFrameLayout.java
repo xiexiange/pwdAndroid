@@ -91,6 +91,7 @@ public class MeFrameLayout extends Fragment
                 SharedPrefUtils.setBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, !isChecked);
             }
         });
+        mClearPwdSwitch.setChecked(!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
     }
 
     private void showConfirmDeleteDialog() {

@@ -25,7 +25,10 @@ import android.widget.Toast;
 import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
+import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.Constant;
+import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -136,6 +139,9 @@ public class AddActivity extends AppCompatActivity {
                 break;
         }
         if (!TextUtils.isEmpty(mAccountPassIn)) {
+            if (SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
+                mAccountPassIn = MaskUtil.mask(mAccountPassIn);
+            }
             mAccountET.setText(mAccountPassIn);
             mPlatformTV.setText(mPlatFormPassIn);
             mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPlatFormPassIn));

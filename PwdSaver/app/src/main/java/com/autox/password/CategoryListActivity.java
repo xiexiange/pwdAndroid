@@ -24,6 +24,7 @@ import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.Constant;
+import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.EventTextView;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
@@ -172,7 +173,11 @@ public class CategoryListActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             PwdItem tmpItem = mPwdItemList.get(position);
             String platform = tmpItem.platform();
-            String account = dataMasking(tmpItem.account());
+            String fullAccount = tmpItem.account();
+            String account = fullAccount;
+            if (SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
+                account = MaskUtil.mask(fullAccount);
+            }
             ((RecyclerViewHolder)holder).platformTv.setText(platform);
             ((RecyclerViewHolder)holder).accountTv.setText(account);
             ((RecyclerViewHolder)holder).icon.setImageResource(PlatformListActivity.getDrawableIdByName(platform));
@@ -183,7 +188,7 @@ public class CategoryListActivity extends AppCompatActivity {
                     if (mEditTV.getVisibility() == View.GONE) {
                         return;
                     }
-                    AddActivity.start(CategoryListActivity.this, mType, platform, account, tmpItem.pwd());
+                    AddActivity.start(CategoryListActivity.this, mType, platform, fullAccount, tmpItem.pwd());
                 }
             });
             ((RecyclerViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
@@ -245,29 +250,6 @@ public class CategoryListActivity extends AppCompatActivity {
         });
         builder.create().show();
 
-    }
-
-    private String dataMasking(String account) {
-        if (!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
-            return account;
-        }
-        String result;
-        int length = account.length();
-        int showAccount = 0;
-        if (length >= 9) {
-            showAccount = 3;
-        } else if (length >= 5) {
-            showAccount = 2;
-        } else {
-            return account;
-        }
-        String pre = account.substring(0, showAccount);
-        String last = account.substring(length - showAccount, length);
-        for (int i = showAccount; i < length - showAccount; i++) {
-            pre += "*";
-        }
-        result = pre + last;
-        return result;
     }
 
     @Subscribe(threadMode=ThreadMode.MAIN)
