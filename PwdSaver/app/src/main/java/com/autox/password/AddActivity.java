@@ -254,7 +254,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable edt) {
                 int length = mAccountET.getText().toString().length();
-                if (length == 0) {
+                if (length == 0 || !mAccountET.isEnabled()) {
                     mAccountCloseIV.setVisibility(View.GONE);
                 } else {
                     mAccountCloseIV.setVisibility(View.VISIBLE);
