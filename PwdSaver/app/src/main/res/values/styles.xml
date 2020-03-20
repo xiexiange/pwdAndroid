@@ -13,4 +13,8 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="PwdEditText" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/background_pwd_input</item>
+    </style>
+
 </resources>

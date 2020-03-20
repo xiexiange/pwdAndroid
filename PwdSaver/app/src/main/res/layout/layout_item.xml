@@ -21,6 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/item_icon"
         android:text="清除数据"
+        android:textSize="15sp"
         android:layout_marginLeft="10dp"/>
 
     <ImageView

@@ -51,6 +51,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="明文账号"
+            android:textSize="15sp"
             app:layout_constraintLeft_toRightOf="@+id/pwd_img"
             android:layout_marginLeft="10dp"/>
         <Switch
