@@ -78,7 +78,7 @@ public class MeFrameLayout extends Fragment
                         return true;
                     }
                     if (!currentChecked && !TextUtils.isEmpty(localPwd)) {
-                        showConfirmRemovePwdDialog();
+                        PwdVerifyActivity.startForResult(MeFrameLayout.this, REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT);
                         return true;
                     }
                 }
@@ -127,7 +127,8 @@ public class MeFrameLayout extends Fragment
                 .setPositiveButton("明文所有账号", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PwdVerifyActivity.startForResult(MeFrameLayout.this, REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT);
+                        mClearPwdSwitch.setChecked(true);
+                        SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -154,8 +155,7 @@ public class MeFrameLayout extends Fragment
                 break;
             case REQUEST_VERIFY_PWD_CODE_OPEN_CLEARACCOUNT:
                 if (resultCode == PwdVerifyActivity.RESULT_OK) {
-                    mClearPwdSwitch.setChecked(true);
-                    SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
+                    showConfirmRemovePwdDialog();
                 }
                 break;
         }
