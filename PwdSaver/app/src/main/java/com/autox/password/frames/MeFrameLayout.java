@@ -87,6 +87,7 @@ public class MeFrameLayout extends Fragment
                     PwdSetActivity.startForResult(MeFrameLayout.this, REQUEST_CODE);
                     return;
                 }
+                SharedPrefUtils.setBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, !isChecked);
             }
         });
     }

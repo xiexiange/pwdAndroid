@@ -21,6 +21,8 @@ import com.autox.password.event.entity.DbChanged;
 import com.autox.password.event.entity.EventEditClicked;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
+import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.EventTextView;
 import com.autox.password.views.statusbar.StatusBarUtil;
@@ -246,6 +248,9 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     private String dataMasking(String account) {
+        if (!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
+            return account;
+        }
         String result;
         int length = account.length();
         int showAccount = 0;
