@@ -15,7 +15,7 @@
 
     <meta-data
         android:name="BUGLY_VERSION"
-        android:value="\ 1000_200307"
+        android:value="\ 1001_200321"
         />
     <application
         android:name=".EApplication"
