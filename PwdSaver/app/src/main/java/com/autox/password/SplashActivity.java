@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autox.password.ads.AD_CONSTANT;
+import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.TLog;
 import com.autox.password.views.statusbar.StatusBarUtil;
 import com.qq.e.ads.splash.SplashAD;
@@ -77,6 +80,10 @@ public class SplashActivity extends Activity implements SplashADListener {
     }
 
     private String getPosId() {
+        long firstInstallTime = SharedPrefUtils.getLong(SharedPrefKeys.KEY_FIRST_INSTALL_TIME, -1L);
+        if (System.currentTimeMillis() - firstInstallTime < DateUtils.DAY_IN_MILLIS) {
+            return "";
+        }
         return AD_CONSTANT.GDT_SPLASH_AD_ID;
 //        String posId = getIntent().getStringExtra("pos_id");
 //        return TextUtils.isEmpty(posId) ? Constant.SplashPosID : posId;
