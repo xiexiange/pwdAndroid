@@ -256,14 +256,14 @@ public class CategoryListActivity extends AppCompatActivity {
         int showAccount = 0;
         if (length >= 9) {
             showAccount = 3;
-        } else if (length >= 7) {
+        } else if (length >= 5) {
             showAccount = 2;
         } else {
             return account;
         }
         String pre = account.substring(0, showAccount);
         String last = account.substring(length - showAccount, length);
-        for (int i = showAccount; i < length - showAccount - 1; i++) {
+        for (int i = showAccount; i < length - showAccount; i++) {
             pre += "*";
         }
         result = pre + last;
