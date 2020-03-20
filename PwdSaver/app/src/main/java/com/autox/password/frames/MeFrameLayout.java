@@ -25,14 +25,12 @@ import java.util.List;
 public class MeFrameLayout extends Fragment
 {
     private View mRoot;
-    private ItemViewList mBackupView;
     private ItemViewList mClearView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.frame_me, null);
-        mBackupView = mRoot.findViewById(R.id.item_backup);
         mClearView = mRoot.findViewById(R.id.item_clear);
         return mRoot;
     }
@@ -44,12 +42,7 @@ public class MeFrameLayout extends Fragment
     }
 
     private void bindEvents() {
-        mBackupView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "要备份", Toast.LENGTH_SHORT).show();
-            }
-        });
+
         mClearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

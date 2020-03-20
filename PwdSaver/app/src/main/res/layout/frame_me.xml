@@ -30,20 +30,46 @@
             />
     </android.support.constraint.ConstraintLayout>
 
-    <com.autox.password.views.ItemViewList
-        android:id="@+id/item_backup"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_pwd_wrapper"
         app:layout_constraintTop_toBottomOf="@+id/title_wrapper"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:layout_marginTop="20dp"
-        app:item_title="备份/恢复"
-        app:image="@drawable/item_list_backup"/>
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:id="@+id/pwd_img"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="2dp"
+            android:src="@drawable/item_list_pwd"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="明文账号"
+            app:layout_constraintLeft_toRightOf="@+id/pwd_img"
+            android:layout_marginLeft="10dp"/>
+        <Switch
+            android:id="@+id/pwd_switch"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:checked="true"
+            android:thumb="@drawable/base_switch_custom_thumb_selector"
+            android:track="@drawable/base_switch_custom_track_selector"/>
+    </android.support.constraint.ConstraintLayout>
 
     <com.autox.password.views.ItemViewList
         android:id="@+id/item_clear"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/item_backup"
+        app:layout_constraintTop_toBottomOf="@+id/item_pwd_wrapper"
         app:item_title="清除数据"
         app:image="@drawable/item_list_delete"
         />
