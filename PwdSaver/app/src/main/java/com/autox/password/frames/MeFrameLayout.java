@@ -156,7 +156,11 @@ public class MeFrameLayout extends Fragment
                 data.setType("text/plain");
                 data.putExtra(Intent.EXTRA_SUBJECT, "分享好应用");
                 data.putExtra(Intent.EXTRA_TEXT, url);
-                startActivity(data);
+                if (data.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(data);
+                } else {
+                    Toast.makeText(getActivity(), "未找到可分享的软件", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mClearPwdSwitch.setChecked(!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
@@ -243,7 +247,11 @@ public class MeFrameLayout extends Fragment
             if (!TextUtils.isEmpty(marketPkg))
                 intent.setPackage(marketPkg);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(getActivity(), "未找到应用商店", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
