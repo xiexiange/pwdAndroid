@@ -3,6 +3,7 @@ package com.autox.password.frames;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
+import com.autox.password.BuildConfig;
 import com.autox.password.PwdSetActivity;
 import com.autox.password.PwdVerifyActivity;
 import com.autox.password.R;
@@ -25,6 +27,7 @@ import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
+import com.autox.password.utils.OSUtils;
 import com.autox.password.views.ItemViewList;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,6 +38,9 @@ public class MeFrameLayout extends Fragment
 {
     private View mRoot;
     private ItemViewList mClearView;
+    private ItemViewList mCommitView;
+    private ItemViewList mFeedbackView;
+    private ItemViewList mShareView;
     private Switch mClearPwdSwitch;
     private static final int REQUEST_SET_PWD_CODE = 1000;
     private static final int REQUEST_VERIFY_PWD_CODE_DELETE = 1001;
@@ -46,12 +52,19 @@ public class MeFrameLayout extends Fragment
         mRoot = inflater.inflate(R.layout.frame_me, null);
         mClearView = mRoot.findViewById(R.id.item_clear);
         mClearPwdSwitch = mRoot.findViewById(R.id.pwd_switch);
+        mCommitView = mRoot.findViewById(R.id.item_commit);
+        mFeedbackView = mRoot.findViewById(R.id.item_feedback);
+        mShareView = mRoot.findViewById(R.id.item_share);
         return mRoot;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (OSUtils.isMiui() || OSUtils.isEmui()) {
+            mCommitView.setVisibility(View.VISIBLE);
+            mShareView.setVisibility(View.VISIBLE);
+        }
         bindEvents();
     }
 
@@ -89,6 +102,57 @@ public class MeFrameLayout extends Fragment
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPrefUtils.setBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, !isChecked);
+            }
+        });
+        mCommitView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                * Google Play com.android.vending
+                应 用 宝 com.tencent.android.qqdownloader
+                360手机助手com.qihoo.appstore
+                百度手机助手com.baidu.appsearch
+                小米应用商店com.xiaomi.market
+                豌 豆 荚com.wandoujia.phoenix2
+                华为应用市场com.huawei.appmarket
+                淘宝手机助手com.taobao.appcenter
+                安卓市场com.hiapk.marketpho
+                安智市场cn.goapk.market
+                * */
+                String marketPkg = "";
+                if (OSUtils.isEmui()) {
+                    marketPkg = "com.huawei.appmarket";
+                } else if (OSUtils.isMiui()) {
+                    marketPkg = "com.xiaomi.market";
+                }
+                launchAppDetail(BuildConfig.APPLICATION_ID, marketPkg);
+            }
+        });
+        mFeedbackView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data=new Intent(Intent.ACTION_SENDTO);
+                data.setData(Uri.parse("mailto:xiexiange@yeah.net"));
+                data.putExtra(Intent.EXTRA_SUBJECT, "意见反馈");
+                data.putExtra(Intent.EXTRA_TEXT, "建议与意见:");
+                startActivity(data);
+            }
+        });
+        mShareView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "找到一款很好用的密码记忆软件，快来和我一起分享喜悦吧：";
+                if (OSUtils.isEmui()) {
+                    url += "https://appstore.huawei.com/app/C101826205";
+                } else if (OSUtils.isMiui()) {
+                    url += "http://app.mi.com/details?id=com.autox.password&ref=search";
+                }
+                Intent data=new Intent(Intent.ACTION_SEND);
+                data.setData(Uri.parse("mailto:xiexiange@yeah.net"));
+                data.setType("text/plain");
+                data.putExtra(Intent.EXTRA_SUBJECT, "分享好应用");
+                data.putExtra(Intent.EXTRA_TEXT, url);
+                startActivity(data);
             }
         });
         mClearPwdSwitch.setChecked(!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
@@ -158,6 +222,26 @@ public class MeFrameLayout extends Fragment
                     showConfirmRemovePwdDialog();
                 }
                 break;
+        }
+    }
+
+    /**
+     * 跳转到应用市场app详情界面
+     * @param appPkg App的包名
+     * @param marketPkg 应用市场包名
+     */
+    public void launchAppDetail(String appPkg, String marketPkg) {
+        try {
+            if (TextUtils.isEmpty(appPkg))
+                return;
+            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!TextUtils.isEmpty(marketPkg))
+                intent.setPackage(marketPkg);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
