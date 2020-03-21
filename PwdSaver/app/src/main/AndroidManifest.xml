@@ -48,8 +48,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait" />
         <activity android:name=".PwdVerifyActivity"
-            android:theme="@style/translucent"
-            android:screenOrientation="portrait" />
+            android:theme="@style/translucent"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
