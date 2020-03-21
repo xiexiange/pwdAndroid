@@ -131,11 +131,15 @@ public class MeFrameLayout extends Fragment
         mFeedbackView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data=new Intent(Intent.ACTION_SENDTO);
+                Intent data = new Intent(Intent.ACTION_SENDTO);
                 data.setData(Uri.parse("mailto:xiexiange@yeah.net"));
                 data.putExtra(Intent.EXTRA_SUBJECT, "意见反馈");
                 data.putExtra(Intent.EXTRA_TEXT, "建议与意见:");
-                startActivity(data);
+                if (data.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(data);
+                } else {
+                    Toast.makeText(getActivity(), "未找到可发送邮件的应用", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mShareView.setOnClickListener(new View.OnClickListener() {
