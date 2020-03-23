@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
+import com.autox.password.pro.R;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 public class PwdVerifyActivity extends AppCompatActivity {

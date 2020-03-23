@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
+import com.autox.password.pro.BuildConfig;
 import com.tencent.bugly.crashreport.CrashReport;
 
 public class EApplication extends Application {

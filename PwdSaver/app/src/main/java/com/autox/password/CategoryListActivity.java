@@ -23,6 +23,7 @@ import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
+import com.autox.password.pro.R;
 import com.autox.password.utils.Constant;
 import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.EventTextView;

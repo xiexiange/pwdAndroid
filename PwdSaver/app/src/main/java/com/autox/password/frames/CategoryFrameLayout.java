@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.autox.password.CategoryListActivity;
-import com.autox.password.R;
+import com.autox.password.pro.R;
 import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;

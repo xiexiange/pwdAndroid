@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.autox.password.pro.R;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.statusbar.StatusBarUtil;
 

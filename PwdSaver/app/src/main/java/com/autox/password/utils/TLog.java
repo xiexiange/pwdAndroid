@@ -2,7 +2,7 @@ package com.autox.password.utils;
 
 import android.util.Log;
 
-import com.autox.password.BuildConfig;
+import com.autox.password.pro.BuildConfig;
 
 
 public class TLog {
