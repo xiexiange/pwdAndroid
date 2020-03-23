@@ -19,7 +19,7 @@
         android:name="com.autox.password.EApplication"
         android:allowBackup="true"
         android:icon="@drawable/pwd_icon"
-        android:label="密码帮"
+        android:label="密码帮 Pro"
         android:roundIcon="@drawable/pwd_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
