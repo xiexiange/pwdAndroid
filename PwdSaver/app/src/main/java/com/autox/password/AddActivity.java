@@ -166,14 +166,14 @@ public class AddActivity extends AppCompatActivity {
                 account = MaskUtil.mask(mAccountPassIn);
                 if (account.contains("*")) {
                     mShowClearAccountTv.setVisibility(View.VISIBLE);
-                    mShareAccountIv.setVisibility(View.GONE);
+                    tryShowShareBtn(false);
                     mCopyAccountIv.setVisibility(View.GONE);
                 } else {
-//                    mShareAccountIv.setVisibility(View.VISIBLE);
+                    tryShowShareBtn(true);
                     mCopyAccountIv.setVisibility(View.VISIBLE);
                 }
             } else {
-//                mShareAccountIv.setVisibility(View.VISIBLE);
+                tryShowShareBtn(true);
                 mCopyAccountIv.setVisibility(View.VISIBLE);
             }
             mAccountET.setText(account);
@@ -398,7 +398,14 @@ public class AddActivity extends AppCompatActivity {
         mShareAccountIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mAccountET.getText().toString());
+                shareIntent = Intent.createChooser(shareIntent, "账号分享");
+                if (shareIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(shareIntent);
+                }
             }
         });
 
@@ -412,6 +419,22 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void tryShowShareBtn(boolean show) {
+        if (!show) {
+            mShareAccountIv.setVisibility(View.GONE);
+            return;
+        }
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Here is the Shared text.");
+//切记需要使用Intent.createChooser，否则会出现别样的应用选择框，您可以试试
+        shareIntent = Intent.createChooser(shareIntent, "Here is the title of Select box");
+        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+            mShareAccountIv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -430,7 +453,7 @@ public class AddActivity extends AppCompatActivity {
                 if (resultCode == PwdVerifyActivity.RESULT_OK) {
                     mAccountET.setText(mAccountPassIn);
                     mShowClearAccountTv.setVisibility(View.GONE);
-//                    mShareAccountIv.setVisibility(View.VISIBLE);
+                    tryShowShareBtn(true);
                     mCopyAccountIv.setVisibility(View.VISIBLE);
                 }
                 break;
