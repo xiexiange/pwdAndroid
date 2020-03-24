@@ -9,7 +9,7 @@ import com.autox.password.event.entity.EventSelectTab;
 import com.autox.password.frames.AddFrameLayout;
 import com.autox.password.frames.CategoryFrameLayout;
 import com.autox.password.frames.MeFrameLayout;
-import com.autox.password.pro.R;
+import com.autox.password.huawei.R;
 import com.autox.password.views.TabView;
 import com.autox.password.views.statusbar.StatusBarUtil;
 

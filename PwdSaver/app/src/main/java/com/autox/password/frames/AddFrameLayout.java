@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.autox.password.AddActivity;
-import com.autox.password.pro.R;
+import com.autox.password.huawei.R;
 import com.autox.password.utils.Constant;
 import com.autox.password.views.recyclerviews.entities.ListEntity;
 

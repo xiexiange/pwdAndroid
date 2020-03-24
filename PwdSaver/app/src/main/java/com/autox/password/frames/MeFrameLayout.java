@@ -18,10 +18,10 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
-import com.autox.password.pro.BuildConfig;
+import com.autox.password.huawei.BuildConfig;
 import com.autox.password.PwdSetActivity;
 import com.autox.password.PwdVerifyActivity;
-import com.autox.password.pro.R;
+import com.autox.password.huawei.R;
 import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;

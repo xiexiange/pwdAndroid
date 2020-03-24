@@ -22,3 +22,5 @@
 
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+# 华为 drm
+-keep class com.huawei.android.sdk.drm.**{*;}

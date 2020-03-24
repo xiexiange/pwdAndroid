@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.autox.password.pro.R;
+import com.autox.password.huawei.R;
 import com.autox.password.event.entity.EventSelectTab;
 
 import org.greenrobot.eventbus.EventBus;

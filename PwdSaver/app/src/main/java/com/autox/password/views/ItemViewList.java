@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.autox.password.pro.R;
+import com.autox.password.huawei.R;
 
 public class ItemViewList extends ConstraintLayout {
     private TextView mTitleTv;
