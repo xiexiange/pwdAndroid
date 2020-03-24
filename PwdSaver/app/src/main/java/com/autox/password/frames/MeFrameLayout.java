@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 
 import com.autox.base.PrefUtil;
+import com.autox.os.OSUtils;
 import com.autox.password.BuildConfig;
 import com.autox.password.PwdSetActivity;
 import com.autox.password.PwdVerifyActivity;
@@ -27,7 +28,6 @@ import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.utils.OSUtils;
 import com.autox.password.views.ItemViewList;
 
 import org.greenrobot.eventbus.EventBus;

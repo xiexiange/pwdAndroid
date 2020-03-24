@@ -7,7 +7,7 @@
     android:background="#eeeeee"
     tools:context=".AddActivity">
 
-    <com.autox.password.views.statusbar.StatusBarPlaceHolderView
+    <com.autox.views.StatusBarPlaceHolderView
         android:id="@+id/status_bar"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"

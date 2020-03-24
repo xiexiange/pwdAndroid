@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.autox.password.utils.Constant;
-import com.autox.password.views.statusbar.StatusBarUtil;
+import com.autox.views.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

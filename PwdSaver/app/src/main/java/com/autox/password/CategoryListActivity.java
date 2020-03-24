@@ -26,7 +26,7 @@ import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.utils.Constant;
 import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.EventTextView;
-import com.autox.password.views.statusbar.StatusBarUtil;
+import com.autox.views.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.autox.password.utils.UIUtil;
+import com.autox.base.UIUtil;
 
 public class RefreshScrollView extends ScrollView {
     /**

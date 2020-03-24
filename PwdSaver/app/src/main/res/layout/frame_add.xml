@@ -7,7 +7,7 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:background="@drawable/frame_bg">
-    <com.autox.password.views.statusbar.StatusBarPlaceHolderView
+    <com.autox.views.StatusBarPlaceHolderView
         android:id="@+id/status_bar"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"

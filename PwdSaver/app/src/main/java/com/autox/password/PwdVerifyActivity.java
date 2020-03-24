@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.autox.base.PrefUtil;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.views.statusbar.StatusBarUtil;
+import com.autox.views.StatusBarUtil;
 
 public class PwdVerifyActivity extends AppCompatActivity {
     private EditText mInput;

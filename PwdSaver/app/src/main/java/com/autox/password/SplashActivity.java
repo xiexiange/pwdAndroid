@@ -23,7 +23,7 @@ import com.autox.base.PrefUtil;
 import com.autox.password.ads.AD_CONSTANT;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.password.utils.TLog;
-import com.autox.password.views.statusbar.StatusBarUtil;
+import com.autox.views.StatusBarUtil;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;

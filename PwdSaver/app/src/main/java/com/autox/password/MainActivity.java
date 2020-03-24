@@ -10,7 +10,7 @@ import com.autox.password.frames.AddFrameLayout;
 import com.autox.password.frames.CategoryFrameLayout;
 import com.autox.password.frames.MeFrameLayout;
 import com.autox.password.views.TabView;
-import com.autox.password.views.statusbar.StatusBarUtil;
+import com.autox.views.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

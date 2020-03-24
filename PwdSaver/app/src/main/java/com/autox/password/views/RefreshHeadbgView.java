@@ -8,7 +8,8 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.autox.password.utils.UIUtil;
+import com.autox.base.UIUtil;
+
 
 public class RefreshHeadbgView extends View {
  
