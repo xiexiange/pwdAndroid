@@ -2,7 +2,6 @@ package com.autox.password;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.event.entity.EventSelectTab;
@@ -17,7 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends HuaweiMainActivity {
     private CategoryFrameLayout mCategoryFrame;
     private AddFrameLayout mAddFrame;
     private MeFrameLayout mMeFrame;
