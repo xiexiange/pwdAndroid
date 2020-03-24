@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.event.entity.DbChanged;
 import com.autox.password.event.entity.EventEditClicked;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.Constant;
 import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.EventTextView;
@@ -175,7 +175,7 @@ public class CategoryListActivity extends AppCompatActivity {
             String platform = tmpItem.platform();
             String fullAccount = tmpItem.account();
             String account = fullAccount;
-            if (SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
+            if (PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
                 account = MaskUtil.mask(fullAccount);
             }
             ((RecyclerViewHolder)holder).platformTv.setText(platform);

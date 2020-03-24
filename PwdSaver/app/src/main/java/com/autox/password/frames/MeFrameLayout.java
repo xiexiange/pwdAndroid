@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 
+import com.autox.base.PrefUtil;
 import com.autox.password.BuildConfig;
 import com.autox.password.PwdSetActivity;
 import com.autox.password.PwdVerifyActivity;
@@ -26,7 +27,6 @@ import com.autox.password.event.entity.DbChanged;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.OSUtils;
 import com.autox.password.views.ItemViewList;
 
@@ -73,7 +73,7 @@ public class MeFrameLayout extends Fragment
         mClearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.equals(SharedPrefUtils.getString(SharedPrefKeys.KEY_PWD, ""), "")){
+                if (!TextUtils.equals(PrefUtil.getString(SharedPrefKeys.KEY_PWD, ""), "")){
                     PwdVerifyActivity.startForResult(MeFrameLayout.this, REQUEST_VERIFY_PWD_CODE_DELETE);
                     return;
                 }
@@ -85,7 +85,7 @@ public class MeFrameLayout extends Fragment
             public boolean onTouch(View v, MotionEvent event) {
                 boolean currentChecked = mClearPwdSwitch.isChecked();
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    String localPwd = SharedPrefUtils.getString(SharedPrefKeys.KEY_PWD, "");
+                    String localPwd = PrefUtil.getString(SharedPrefKeys.KEY_PWD, "");
                     if (currentChecked && TextUtils.isEmpty(localPwd)) {
                         PwdSetActivity.startForResult(MeFrameLayout.this, REQUEST_SET_PWD_CODE);
                         return true;
@@ -101,7 +101,7 @@ public class MeFrameLayout extends Fragment
         mClearPwdSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPrefUtils.setBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, !isChecked);
+                PrefUtil.setBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, !isChecked);
             }
         });
         mCommitView.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +163,7 @@ public class MeFrameLayout extends Fragment
                 }
             }
         });
-        mClearPwdSwitch.setChecked(!SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
+        mClearPwdSwitch.setChecked(!PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
     }
 
     private void showConfirmDeleteDialog() {
@@ -177,7 +177,7 @@ public class MeFrameLayout extends Fragment
                             DbHelper.getInstance().setDeleted(item);
                         }
                         EventBus.getDefault().post(new DbChanged());
-                        SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
+                        PrefUtil.setString(SharedPrefKeys.KEY_PWD, "");
                         mClearPwdSwitch.setChecked(true);
                         Toast.makeText(getActivity(), "已删除所有数据", Toast.LENGTH_SHORT).show();
                         // todo 可以做个意见反馈
@@ -200,7 +200,7 @@ public class MeFrameLayout extends Fragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mClearPwdSwitch.setChecked(true);
-                        SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, "");
+                        PrefUtil.setString(SharedPrefKeys.KEY_PWD, "");
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

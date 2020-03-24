@@ -22,11 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.Constant;
 import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.statusbar.StatusBarUtil;
@@ -144,7 +144,7 @@ public class AddActivity extends AppCompatActivity {
         }
         if (!TextUtils.isEmpty(mAccountPassIn)) {
             String account = mAccountPassIn;
-            if (SharedPrefUtils.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
+            if (PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
                 account = MaskUtil.mask(mAccountPassIn);
                 if (account.contains("*")) {
                     mShowClearAccountTv.setVisibility(View.VISIBLE);

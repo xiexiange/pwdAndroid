@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 public class PwdSetActivity extends AppCompatActivity {
@@ -58,7 +58,7 @@ public class PwdSetActivity extends AppCompatActivity {
                     Toast.makeText(PwdSetActivity.this, "两次密码不一致，请确认输入", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SharedPrefUtils.setString(SharedPrefKeys.KEY_PWD, firstText);
+                PrefUtil.setString(SharedPrefKeys.KEY_PWD, firstText);
                 setResult(RESULT_OK);
                 finish();
             }

@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.views.statusbar.StatusBarUtil;
 
 public class PwdVerifyActivity extends AppCompatActivity {
@@ -48,7 +48,7 @@ public class PwdVerifyActivity extends AppCompatActivity {
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String realPwd = SharedPrefUtils.getString(SharedPrefKeys.KEY_PWD, "");
+                String realPwd = PrefUtil.getString(SharedPrefKeys.KEY_PWD, "");
                 if (TextUtils.equals(realPwd, mInput.getText().toString())) {
                     setResult(RESULT_OK);
                     finish();

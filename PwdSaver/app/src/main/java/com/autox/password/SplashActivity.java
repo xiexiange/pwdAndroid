@@ -19,9 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.ads.AD_CONSTANT;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 import com.autox.password.utils.TLog;
 import com.autox.password.views.statusbar.StatusBarUtil;
 import com.qq.e.ads.splash.SplashAD;
@@ -80,7 +80,7 @@ public class SplashActivity extends Activity implements SplashADListener {
     }
 
     private String getPosId() {
-        long firstInstallTime = SharedPrefUtils.getLong(SharedPrefKeys.KEY_FIRST_INSTALL_TIME, -1L);
+        long firstInstallTime = PrefUtil.getLong(SharedPrefKeys.KEY_FIRST_INSTALL_TIME, -1L);
         if (System.currentTimeMillis() - firstInstallTime < DateUtils.DAY_IN_MILLIS) {
             return "";
         }

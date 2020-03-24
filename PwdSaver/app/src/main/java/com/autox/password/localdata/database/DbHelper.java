@@ -10,10 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.autox.base.PrefUtil;
 import com.autox.password.EApplication;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.localdata.sharedprefs.SharedPrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class DbHelper extends SQLiteOpenHelper {
         //  prayIng: text
         Log.e(DbHelper.class.getName(), "Echo , onCreate");
         db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, deleted Integer, upload Integer)");
-        SharedPrefUtils.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
+        PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
     }
 
     public void uploadToServer(int type, String time) {
@@ -156,7 +156,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        int currentVersion = SharedPrefUtils.getInteger(SharedPrefKeys.KEY_DB_VERSION, 1000);
+        int currentVersion = PrefUtil.getInteger(SharedPrefKeys.KEY_DB_VERSION, 1000);
 
         Log.e(DbHelper.class.getName(), "Echo , onUpgrade, current: " + currentVersion + ", target: " + DbConstant.DB_VERSION);
         for (int i = currentVersion; i < DbConstant.DB_VERSION; i++) {
@@ -181,7 +181,7 @@ public class DbHelper extends SQLiteOpenHelper {
 //                } catch (SQLException e) {
 //                    e.printStackTrace();
 //                }
-//                SharedPrefUtils.setInteger(SharedPrefKeys.KEY_DB_VERSION, 1002);
+//                PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, 1002);
                 break;
         }
     }
