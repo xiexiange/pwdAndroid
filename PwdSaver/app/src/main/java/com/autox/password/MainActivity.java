@@ -3,6 +3,7 @@ package com.autox.password;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.event.entity.EventSelectTab;
@@ -70,4 +71,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private long mFirstBackTime = -1;
+    @Override
+    public void onBackPressed() {
+
+        // 需要确认的退出
+        if (mFirstBackTime == 0 || (System.currentTimeMillis() - mFirstBackTime) > 2000) {
+            Toast.makeText(this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
+            mFirstBackTime = System.currentTimeMillis();
+            return;
+        }
+
+        // 正常退出，重置退出时间
+        mFirstBackTime = 0;
+        super.onBackPressed();
+    }
 }
