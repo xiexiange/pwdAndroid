@@ -1,5 +1,7 @@
 package com.autox.password;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,6 +60,8 @@ public class AddActivity extends AppCompatActivity {
     private EditText mPwdET;
     private ImageView mPwdCloseIV;
     private TextView mShowClearAccountTv;
+    private ImageView mShareAccountIv;
+    private ImageView mCopyAccountIv;
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
@@ -107,6 +111,8 @@ public class AddActivity extends AppCompatActivity {
         mPlatformWrapper = findViewById(R.id.add_page_platform_wrapper);
         mPlatformImage = findViewById(R.id.add_page_platform_image);
         mShowClearAccountTv = findViewById(R.id.show_clear_account);
+        mShareAccountIv = findViewById(R.id.account_share);
+        mCopyAccountIv = findViewById(R.id.account_copy);
         int imageId;
         String platName = "";
         int drawable = R.drawable.platform_icon_other;
@@ -160,7 +166,15 @@ public class AddActivity extends AppCompatActivity {
                 account = MaskUtil.mask(mAccountPassIn);
                 if (account.contains("*")) {
                     mShowClearAccountTv.setVisibility(View.VISIBLE);
+                    mShareAccountIv.setVisibility(View.GONE);
+                    mCopyAccountIv.setVisibility(View.GONE);
+                } else {
+//                    mShareAccountIv.setVisibility(View.VISIBLE);
+                    mCopyAccountIv.setVisibility(View.VISIBLE);
                 }
+            } else {
+//                mShareAccountIv.setVisibility(View.VISIBLE);
+                mCopyAccountIv.setVisibility(View.VISIBLE);
             }
             mAccountET.setText(account);
             mPlatformTV.setText(mPlatFormPassIn);
@@ -381,6 +395,22 @@ public class AddActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE_SHOW_CLEAR_ACCOUNT);
             }
         });
+        mShareAccountIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mCopyAccountIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData mClipData = ClipData.newPlainText("Label", mAccountET.getText().toString());
+                cm.setPrimaryClip(mClipData);
+                Toast.makeText(AddActivity.this, "账号已经复制到剪切板中", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -400,6 +430,8 @@ public class AddActivity extends AppCompatActivity {
                 if (resultCode == PwdVerifyActivity.RESULT_OK) {
                     mAccountET.setText(mAccountPassIn);
                     mShowClearAccountTv.setVisibility(View.GONE);
+//                    mShareAccountIv.setVisibility(View.VISIBLE);
+                    mCopyAccountIv.setVisibility(View.VISIBLE);
                 }
                 break;
         }
