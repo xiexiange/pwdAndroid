@@ -14,6 +14,7 @@ import com.autox.base.PrefUtil;
 import com.autox.password.EApplication;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.password.utils.ClientEncodeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +123,22 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    private List<PwdItem> getPwdList(SQLiteDatabase db) {
+        List<PwdItem> items = new ArrayList<>();
+        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD, new String[]{});
+        while (cursor.moveToNext()) {
+            PwdItem item = new PwdItem(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    Long.parseLong(cursor.getString(5))
+            );
+            items.add(item);
+        }
+        return items;
+    }
+
     public List<PwdItem> getPwdSizeByType(String type) {
         List<PwdItem> items = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -167,21 +184,13 @@ public class DbHelper extends SQLiteOpenHelper {
     private void dealVersion(SQLiteDatabase db, int version) {
         switch (version) {
             case 1001:
-//                String freeSql = "Create Table if not exists " + DB_NAME_FREE_RECORD + "(id Integer primary key autoincrement, animalName text, freeTime text, freeIng text, upload Integer)";
-//                String praySql = "Create Table if not exists " + DB_NAME_PRAY_RECORD + "(id Integer primary key autoincrement, buddhaName text, prayTime text, prayIng text, upload Integer)";
-//                if (haveTable(db, DB_NAME_PRAY_RECORD)) {
-//                    praySql = "ALTER TABLE " + DB_NAME_PRAY_RECORD + " ADD upload Integer" ;
-//                }
-//                if (haveTable(db, DB_NAME_FREE_RECORD)) {
-//                    freeSql = "ALTER TABLE " + DB_NAME_FREE_RECORD + " ADD upload Integer" ;
-//                }
-//                try {
-//                    db.execSQL(praySql);
-//                    db.execSQL(freeSql);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, 1002);
+                Log.e("Echo", "update 1001 start");
+                List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
+                for (PwdItem item : items) {
+                    DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime()));
+                }
+
+                Log.e("Echo", "update 1001 end");
                 break;
         }
     }
