@@ -139,7 +139,9 @@ public class AddActivity extends AppCompatActivity {
                 mTitle = "金融";
                 imageId = R.drawable.icon_wallet;
                 drawable = R.drawable.platform_icon_zhaoshang;
-                platName = "招商银行(需要密码保护)";
+                platName = "招商银行(暂不支持密码)";
+                mPwdET.setEnabled(false);
+                mPwdET.setText("暂不支持");
                 break;
             case GAME:
                 mTitle = "游戏";
