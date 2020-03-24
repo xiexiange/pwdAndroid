@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
 import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.password.utils.ClientEncodeUtil;
 import com.autox.password.utils.Constant;
 import com.autox.password.utils.MaskUtil;
 import com.autox.password.views.statusbar.StatusBarUtil;
@@ -78,7 +80,16 @@ public class AddActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_TYPE, type);
         intent.putExtra(EXTRA_PLATFORM, platform);
         intent.putExtra(EXTRA_ACCOUNT, account);
-        intent.putExtra(EXTRA_PWD, Pwd);
+        String pwdDecode = "";
+        try {
+            pwdDecode = ClientEncodeUtil.decode(Pwd);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.e("Echo", "Pwd: " + Pwd);
+        Log.e("Echo", "pwdDecode: " + pwdDecode);
+        intent.putExtra(EXTRA_PWD, pwdDecode);
         context.startActivity(intent);
     }
 
@@ -196,7 +207,9 @@ public class AddActivity extends AppCompatActivity {
                     showKeyboard(v);
                     return;
                 }
-                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwd, System.currentTimeMillis()), false);
+                String pwdmask = ClientEncodeUtil.encode(pwd);
+                Log.e("Echo", "pwd: " + pwd + ", pwdmask: " + pwdmask);
+                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis()), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new EventGoMainPage());
                 finish();
