@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.autox.password.utils.UIUtil;
+
 public class StatusBarPlaceHolderView extends View {
     private static boolean INIT = false;
     private static int STATUS_BAR_HEIGHT = 50;
@@ -31,6 +33,8 @@ public class StatusBarPlaceHolderView extends View {
         int statusBarHeight = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             statusBarHeight = getStatusBarHeight(getContext());
+        } else {
+            statusBarHeight = UIUtil.dip2px(getContext(), 22);
         }
         setMeasuredDimension(getDefaultSize(0, widthMeasureSpec), statusBarHeight);
     }

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autox.base.PrefUtil;
+import com.autox.password.event.entity.DbChanged;
 import com.autox.password.event.entity.EventGoMainPage;
 import com.autox.password.localdata.database.DbHelper;
 import com.autox.password.localdata.database.items.PwdItem;
@@ -211,6 +212,7 @@ public class AddActivity extends AppCompatActivity {
                 Log.e("Echo", "pwd: " + pwd + ", pwdmask: " + pwdmask);
                 DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis()), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new DbChanged());
                 EventBus.getDefault().post(new EventGoMainPage());
                 finish();
             }
