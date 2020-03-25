@@ -88,8 +88,11 @@ public class PlatformListActivity extends AppCompatActivity {
         switch (mType) {
             case WORK:
                 mTitle = "工作";
+                result.add(new PlatformListItem("工号", R.drawable.platform_icon_number));
+                result.add(new PlatformListItem("开机密码", R.drawable.platform_icon_shutdown));
                 result.add(new PlatformListItem("邮箱", R.drawable.platform_icon_mail));
-                result.add(new PlatformListItem("电脑开机", R.drawable.platform_icon_shutdown));
+                result.add(new PlatformListItem("gitlab", R.drawable.platform_icon_gitlab));
+                result.add(new PlatformListItem("github", R.drawable.platform_icon_github));
                 break;
             case VIDEO:
                 mTitle = "视频";
@@ -250,6 +253,10 @@ public class PlatformListActivity extends AppCompatActivity {
 
         result.put("邮箱", R.drawable.platform_icon_mail);
         result.put("电脑开机", R.drawable.platform_icon_shutdown);
+        result.put("开机密码", R.drawable.platform_icon_shutdown);
+        result.put("gitlab", R.drawable.platform_icon_gitlab);
+        result.put("github", R.drawable.platform_icon_github);
+        result.put("工号", R.drawable.platform_icon_number);
         result.put("爱奇艺视频", R.drawable.platform_icon_iqiyi);
         result.put("优酷视频", R.drawable.platform_icon_youku);
         result.put("搜狐视频", R.drawable.platform_icon_souhu);
