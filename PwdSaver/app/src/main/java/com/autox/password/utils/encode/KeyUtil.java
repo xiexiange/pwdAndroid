@@ -1,9 +1,0 @@
-package com.autox.password.utils.encode;
- 
-public class KeyUtil {
-	//服务端的RSA公钥(Base64编码)
-	public final static String SERVER_PUBLIC_KEY = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMPnfj1VqDyHgQNzn5Gz9+BJIeJkaAH/D4/gOK7X8xk8sNcZuveFaG2BV3TU+Dcr44MpxhBEwb2UIRpVRkRkFOMCAwEAAQ==";
-
-	//服务端的RSA私钥(Base64编码)
-	public final static String SERVER_PRIVATE_KEY = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAw+d+PVWoPIeBA3OfkbP34Ekh4mRoAf8Pj+A4rtfzGTyw1xm694VobYFXdNT4NyvjgynGEETBvZQhGlVGRGQU4wIDAQABAkAFxzUs//LHXkPK40UomgNMpTuPnuCGdoxx9O4XEh2Ed/2RRIPK9v1lNFjPIkxQD1WdARBXS81RwzTAEULDSuqBAiEA6z9URGtpk4J+gTEE2TvCNLMMX95n6dEaq+MVDJyuKiMCIQDVL6pOORmIWApiUbRh8pYXqG02eEzNpr5By1BFxBg2QQIhALuLyYqid5D6QBCPG+Z0FegdtofXr9BgvHq8l1NutgsxAiAhm+4hfucDk72vWmoxtujquebd24FgOpVsEf2Jwix/AQIgOnXp5XVlR7Rkw1GURZjeLKLG7Drm0dUACYWuPVn7GeQ=";
-}

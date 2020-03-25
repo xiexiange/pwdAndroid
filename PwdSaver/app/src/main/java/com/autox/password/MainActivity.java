@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.autox.password.event.entity.EventGoMainPage;
-import com.autox.password.event.entity.EventSelectTab;
-import com.autox.password.frames.AddFrameLayout;
-import com.autox.password.frames.CategoryFrameLayout;
-import com.autox.password.frames.MeFrameLayout;
-import com.autox.password.views.TabView;
+import com.autox.module.entities.EventGoMainPage;
+import com.autox.module.entities.EventSelectTab;
+import com.autox.module.frames.AddFrameLayout;
+import com.autox.module.frames.CategoryFrameLayout;
+import com.autox.module.frames.MeFrameLayout;
+import com.autox.module.view.TabView;
 import com.autox.views.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;

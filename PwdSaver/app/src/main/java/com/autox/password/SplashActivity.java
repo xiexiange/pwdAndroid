@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.autox.base.PrefUtil;
 import com.autox.password.ads.AD_CONSTANT;
-import com.autox.password.localdata.sharedprefs.SharedPrefKeys;
-import com.autox.password.utils.TLog;
+import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.module.util.TLog;
 import com.autox.views.StatusBarUtil;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
@@ -30,7 +30,6 @@ import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SplashActivity extends Activity implements SplashADListener {
     private static final String TAG = SplashActivity.class.getName();

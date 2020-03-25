@@ -2,12 +2,9 @@ package com.autox.password;
  
 import android.content.Context;
 
-import com.autox.password.http.ServiceInstance;
-import com.autox.password.http.entity.GetPlatMsgReception;
-import com.autox.password.utils.ClientEncodeUtil;
-import com.autox.password.utils.encode.AESUtil;
-import com.autox.password.utils.encode.HttpEncryptUtil;
-import com.autox.password.utils.encode.RSAUtil;
+import com.autox.module.util.encode.AESUtil;
+import com.autox.module.util.encode.HttpEncryptUtil;
+import com.autox.module.util.encode.RSAUtil;
 
 import java.io.InputStream;
 import java.security.KeyPair;
