@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.autox.base.PrefUtil;
+import com.autox.module.MainActivity;
 import com.autox.password.ads.AD_CONSTANT;
 import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.module.util.TLog;

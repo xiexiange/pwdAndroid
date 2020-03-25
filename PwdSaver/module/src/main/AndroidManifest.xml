@@ -5,6 +5,26 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
+
+        <activity android:name="com.autox.module.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.autox.module.AddActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.autox.module.CategoryListActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.autox.module.PlatformListActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.autox.module.PwdSetActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.autox.module.PwdVerifyActivity"
+            android:theme="@style/translucent"/>
+
     </application>
 
 </manifest>

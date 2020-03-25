@@ -1,4 +1,4 @@
-package com.autox.password;
+package com.autox.module;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,7 @@ import com.autox.module.frames.AddFrameLayout;
 import com.autox.module.frames.CategoryFrameLayout;
 import com.autox.module.frames.MeFrameLayout;
 import com.autox.module.view.TabView;
+import com.autox.pwd_module.R;
 import com.autox.views.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
