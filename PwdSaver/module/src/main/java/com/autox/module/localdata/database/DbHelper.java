@@ -51,7 +51,6 @@ public class DbHelper extends SQLiteOpenHelper {
         //  buddhaName: text
         //  prayTime: text
         //  prayIng: text
-        Log.e(DbHelper.class.getName(), "Echo , onCreate");
         db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, deleted Integer, upload Integer)");
         PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
     }
@@ -174,7 +173,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         int currentVersion = PrefUtil.getInteger(SharedPrefKeys.KEY_DB_VERSION, 1000);
 
-        Log.e(DbHelper.class.getName(), "Echo , onUpgrade, current: " + currentVersion + ", target: " + DbConstant.DB_VERSION);
         for (int i = currentVersion; i < DbConstant.DB_VERSION; i++) {
             dealVersion(db, i + 1);
         }
@@ -183,13 +181,10 @@ public class DbHelper extends SQLiteOpenHelper {
     private void dealVersion(SQLiteDatabase db, int version) {
         switch (version) {
             case 1001:
-                Log.e("Echo", "update 1001 start");
                 List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
                 for (PwdItem item : items) {
                     DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime()));
                 }
-
-                Log.e("Echo", "update 1001 end");
                 break;
         }
     }

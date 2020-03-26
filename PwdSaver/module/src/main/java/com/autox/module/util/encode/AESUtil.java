@@ -41,7 +41,6 @@ public class AESUtil {
 	public static byte[] decryptAES(byte[] source, SecretKey key) throws Exception{
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.DECRYPT_MODE, key);
-		Log.e("Echo decryptAES", cipher.getProvider().getClass().getName());
 		return cipher.doFinal(source);
 	}
 	

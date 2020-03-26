@@ -91,8 +91,6 @@ public class AddActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.e("Echo", "Pwd: " + Pwd);
-        Log.e("Echo", "pwdDecode: " + pwdDecode);
         intent.putExtra(EXTRA_PWD, pwdDecode);
         context.startActivity(intent);
     }
@@ -224,7 +222,6 @@ public class AddActivity extends AppCompatActivity {
                     return;
                 }
                 String pwdmask = ClientEncodeUtil.encode(pwd);
-                Log.e("Echo", "pwd: " + pwd + ", pwdmask: " + pwdmask);
                 DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis()), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new DbChanged());
