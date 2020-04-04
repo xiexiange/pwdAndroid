@@ -88,7 +88,7 @@ public class AddFrameLayout extends Fragment
                                 type = Constant.CATEGORY_TYPE.OTHER;
                                 break;
                         }
-                        AddActivity.start(getActivity(), type, "","", "");
+                        AddActivity.start(getActivity(), type, null);
                     }
                 });
             }

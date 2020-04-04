@@ -191,7 +191,7 @@ public class CategoryListActivity extends AppCompatActivity {
                     if (mEditTV.getVisibility() == View.GONE) {
                         return;
                     }
-                    AddActivity.start(CategoryListActivity.this, mType, platform, fullAccount, tmpItem.pwd());
+                    AddActivity.start(CategoryListActivity.this, mType, tmpItem);
                 }
             });
             ((RecyclerViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {

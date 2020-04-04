@@ -51,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
         //  buddhaName: text
         //  prayTime: text
         //  prayIng: text
-        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, deleted Integer, upload Integer)");
+        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, note text, deleted Integer, upload Integer)");
         PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
     }
 
@@ -98,6 +98,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("account", item.account() + "");
         values.put("pwd", item.pwd() + "");
         values.put("saveTime", item.saveTime() + "");
+        values.put("note", item.note());
         values.put("upload", uploadInt);
         values.put("deleted", 0);
         db.insert(DB_NAME_PWD, null, values);
@@ -114,7 +115,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4),
-                    Long.parseLong(cursor.getString(5))
+                    Long.parseLong(cursor.getString(5)),
+                    cursor.getString(6)
             );
             items.add(item);
         }
@@ -130,7 +132,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4),
-                    Long.parseLong(cursor.getString(5))
+                    Long.parseLong(cursor.getString(5)),
+                    cursor.getString(6)
             );
             items.add(item);
         }
@@ -147,7 +150,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4),
-                    Long.parseLong(cursor.getString(5))
+                    Long.parseLong(cursor.getString(5)),
+                    cursor.getString(6)
             );
             items.add(item);
         }
@@ -160,6 +164,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("platform", item.platform() + "");
         values.put("account", item.account() + "");
         values.put("pwd", item.pwd() + "");
+        values.put("note", item.note() + "");
         values.put("upload", 0);
         db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
@@ -181,9 +186,10 @@ public class DbHelper extends SQLiteOpenHelper {
     private void dealVersion(SQLiteDatabase db, int version) {
         switch (version) {
             case 1001:
+            case 1002:
                 List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
                 for (PwdItem item : items) {
-                    DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime()));
+                    DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime(), ""));
                 }
                 break;
         }

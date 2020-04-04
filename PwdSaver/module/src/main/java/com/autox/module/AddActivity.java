@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,25 +43,22 @@ import static com.autox.module.Constant.CATEGORY_TYPE.*;
 
 public class AddActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
-    private static final String EXTRA_PLATFORM = "platform";
-    private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_PWD = "pwd";
+    private static final String EXTRA_ITEM = "pwd_item";
     private static final int REQUEST_CODE_SHOW_CLEAR_ACCOUNT = 1000;
     private static final int REQUEST_CODE_PLATFORM_LIST = 1001;
     private CATEGORY_TYPE mType;
-    private String mPlatFormPassIn;
-    private String mAccountPassIn;
-    private String mPwdPassIn;
     private ImageView mIconIV;
     private TextView mTitleTV;
     private EditText mAccountET;
     private ImageView mAccountCloseIV;
     private TextView mPlatformTV;
     private EditText mPwdET;
+    private EditText mNoteET;
     private ImageView mPwdCloseIV;
     private TextView mShowClearAccountTv;
     private ImageView mShareAccountIv;
     private ImageView mCopyAccountIv;
+    private PwdItem mPwdItem;
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
@@ -72,26 +70,16 @@ public class AddActivity extends AppCompatActivity {
         StatusBarUtil.setTranslucentStatus(this);
         setContentView(R.layout.activity_add);
         mType = (CATEGORY_TYPE) getIntent().getSerializableExtra(EXTRA_TYPE);
-        mAccountPassIn = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mPlatFormPassIn = getIntent().getStringExtra(EXTRA_PLATFORM);
-        mPwdPassIn = getIntent().getStringExtra(EXTRA_PWD);
+        mPwdItem = (PwdItem) getIntent().getSerializableExtra(EXTRA_ITEM);
         initViews();
         bindEvents();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
-    public static void start(Context context, CATEGORY_TYPE type, @NonNull String platform, @NonNull String account, @NonNull String Pwd) {
+    public static void start(Context context, CATEGORY_TYPE type, PwdItem item) {
         Intent intent = new Intent(context, AddActivity.class);
         intent.putExtra(EXTRA_TYPE, type);
-        intent.putExtra(EXTRA_PLATFORM, platform);
-        intent.putExtra(EXTRA_ACCOUNT, account);
-        String pwdDecode = "";
-        try {
-            pwdDecode = ClientEncodeUtil.decode(Pwd);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        intent.putExtra(EXTRA_PWD, pwdDecode);
+        intent.putExtra(EXTRA_ITEM, item);
         context.startActivity(intent);
     }
 
@@ -104,6 +92,7 @@ public class AddActivity extends AppCompatActivity {
         mAccountET = findViewById(R.id.add_page_account_content);
         mAccountCloseIV = findViewById(R.id.add_page_clear_account);
         mPwdET = findViewById(R.id.add_page_pwd_content);
+        mNoteET = findViewById(R.id.add_page_note_edit);
         mPwdCloseIV = findViewById(R.id.add_page_clear_pwd);
         mPlatformWrapper = findViewById(R.id.add_page_platform_wrapper);
         mPlatformImage = findViewById(R.id.add_page_platform_image);
@@ -159,10 +148,9 @@ public class AddActivity extends AppCompatActivity {
                 platName = "其它";
                 break;
         }
-        if (!TextUtils.isEmpty(mAccountPassIn)) {
-            String account = mAccountPassIn;
+        if (mPwdItem != null) {
             if (PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
-                account = MaskUtil.mask(mAccountPassIn);
+                String account = MaskUtil.mask(mPwdItem.account());
                 if (account.contains("*")) {
                     mShowClearAccountTv.setVisibility(View.VISIBLE);
                     tryShowShareBtn(false);
@@ -175,11 +163,16 @@ public class AddActivity extends AppCompatActivity {
                 tryShowShareBtn(true);
                 mCopyAccountIv.setVisibility(View.VISIBLE);
             }
-            mAccountET.setText(account);
-            mPlatformTV.setText(mPlatFormPassIn);
-            mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPlatFormPassIn));
+            mAccountET.setText(mPwdItem.account());
+            mPlatformTV.setText(mPwdItem.platform());
+            mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPwdItem.platform()));
             mAccountET.setEnabled(false);
-            mPwdET.setText(mPwdPassIn);
+            try {
+                mPwdET.setText(ClientEncodeUtil.decode(mPwdItem.pwd()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mNoteET.setText(mPwdItem.note());
             findViewById(R.id.add_page_platform_arrow_right).setVisibility(View.INVISIBLE);
         } else {
             mPlatformTV.setText(platName);
@@ -205,6 +198,7 @@ public class AddActivity extends AppCompatActivity {
                 String platform = mPlatformTV.getText().toString();
                 String account = mAccountET.getText().toString();
                 String pwd = mPwdET.getText().toString();
+                String note = mNoteET.getText().toString();
                 if (TextUtils.isEmpty(platform)) {
                     Toast.makeText(AddActivity.this, "平台名称不能为空", Toast.LENGTH_SHORT).show();
                     return;
@@ -221,8 +215,11 @@ public class AddActivity extends AppCompatActivity {
                     showKeyboard(v);
                     return;
                 }
+                if (note == null) {
+                    note = "";
+                }
                 String pwdmask = ClientEncodeUtil.encode(pwd);
-                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis()), false);
+                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new DbChanged());
                 EventBus.getDefault().post(new EventGoMainPage());
@@ -377,7 +374,7 @@ public class AddActivity extends AppCompatActivity {
         mPlatformWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(mAccountPassIn)) {
+                if (mPwdItem != null) {
                     return;
                 }
                 Intent intent = new Intent(AddActivity.this, PlatformListActivity.class);
@@ -449,7 +446,7 @@ public class AddActivity extends AppCompatActivity {
                 mPlatformImage.setImageResource(drawable);
             case REQUEST_CODE_SHOW_CLEAR_ACCOUNT:
                 if (resultCode == PwdVerifyActivity.RESULT_OK) {
-                    mAccountET.setText(mAccountPassIn);
+                    mAccountET.setText(mPwdItem.account());
                     mShowClearAccountTv.setVisibility(View.GONE);
                     tryShowShareBtn(true);
                     mCopyAccountIv.setVisibility(View.VISIBLE);
