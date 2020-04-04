@@ -179,14 +179,26 @@ public class DbHelper extends SQLiteOpenHelper {
         int currentVersion = PrefUtil.getInteger(SharedPrefKeys.KEY_DB_VERSION, 1000);
 
         for (int i = currentVersion; i < DbConstant.DB_VERSION; i++) {
-            dealVersion(db, i + 1);
+            dealDBFiled(db, i);
+        }
+
+        for (int i = currentVersion; i < DbConstant.DB_VERSION; i++) {
+            dealDBData(db, i);
         }
     }
 
-    private void dealVersion(SQLiteDatabase db, int version) {
+    private void dealDBFiled(SQLiteDatabase db, int version) {
         switch (version) {
             case 1001:
-            case 1002:
+                String sql1001 = "alter table " + DB_NAME_PWD + " add note string";
+                db.execSQL(sql1001);
+                break;
+        }
+    }
+
+    private void dealDBData(SQLiteDatabase db, int version) {
+        switch (version) {
+            case 1000:
                 List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
                 for (PwdItem item : items) {
                     DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime(), ""));
