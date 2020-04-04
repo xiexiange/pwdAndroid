@@ -148,10 +148,10 @@ public class DbHelper extends SQLiteOpenHelper {
             PwdItem item = new PwdItem(
                     cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    Long.parseLong(cursor.getString(5)),
-                    cursor.getString(6)
+                    cursor.getString(3),                    //account
+                    cursor.getString(4),                    //pwd
+                    Long.parseLong(cursor.getString(5)),    //saveTime
+                    cursor.getString(cursor.getColumnIndex("note"))                     //note
             );
             items.add(item);
         }
@@ -190,7 +190,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private void dealDBFiled(SQLiteDatabase db, int version) {
         switch (version) {
             case 1001:
-                String sql1001 = "alter table " + DB_NAME_PWD + " add note string";
+                String sql1001 = "alter table " + DB_NAME_PWD + " add column note string";
                 db.execSQL(sql1001);
                 break;
         }
