@@ -149,8 +149,9 @@ public class AddActivity extends AppCompatActivity {
                 break;
         }
         if (mPwdItem != null) {
+            String account = mPwdItem.account();
             if (PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false)) {
-                String account = MaskUtil.mask(mPwdItem.account());
+                account = MaskUtil.mask(mPwdItem.account());
                 if (account.contains("*")) {
                     mShowClearAccountTv.setVisibility(View.VISIBLE);
                     tryShowShareBtn(false);
@@ -163,7 +164,7 @@ public class AddActivity extends AppCompatActivity {
                 tryShowShareBtn(true);
                 mCopyAccountIv.setVisibility(View.VISIBLE);
             }
-            mAccountET.setText(mPwdItem.account());
+            mAccountET.setText(account);
             mPlatformTV.setText(mPwdItem.platform());
             mPlatformImage.setImageResource(PlatformListActivity.getDrawableIdByName(mPwdItem.platform()));
             mAccountET.setEnabled(false);
