@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_radius_8_white"
-    android:padding="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     android:layout_marginBottom="6dp">
     <ImageView
         android:id="@+id/platform_icon"
