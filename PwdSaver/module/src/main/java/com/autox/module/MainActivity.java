@@ -11,6 +11,7 @@ import com.autox.module.frames.AddFrameLayout;
 import com.autox.module.frames.CategoryFrameLayout;
 import com.autox.module.frames.FavorFrameLayout;
 import com.autox.module.frames.MeFrameLayout;
+import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.view.TabView;
 import com.autox.pwd_module.R;
 import com.autox.views.StatusBarUtil;
@@ -26,18 +27,24 @@ public class MainActivity extends AppCompatActivity {
     private FavorFrameLayout mFavorFrame;
     private String mCurrentTabTitle = "";
     private TabView mCategoryTab;
+    private TabView mAddTab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTranslucentStatus(this);
         setContentView(R.layout.activity_main);
         mCategoryTab = findViewById(R.id.tab_fenlei);
+        mAddTab = findViewById(R.id.tab_add);
         mCategoryFrame = new CategoryFrameLayout();
         mAddFrame = new AddFrameLayout();
         mMeFrame = new MeFrameLayout();
         mFavorFrame = new FavorFrameLayout();
         EventBus.getDefault().register(this);
-        mCategoryTab.performClick();
+        if (DbHelper.getInstance().getPwdList().size() == 0) {
+            mAddTab.performClick();
+        } else {
+            mCategoryTab.performClick();
+        }
     }
 
 
