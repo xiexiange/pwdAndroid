@@ -181,13 +181,14 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public void dislike(PwdItem item) {
+    public void like(PwdItem item, boolean like) {
+        int favor = like ? 1 : 0;
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("type", item.type() + "");
         values.put("platform", item.platform() + "");
         values.put("account", item.account() + "");
-        values.put("favor", 0);
+        values.put("favor", favor);
         db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
 

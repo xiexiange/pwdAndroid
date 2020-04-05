@@ -3,11 +3,15 @@ package com.autox.module;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -15,7 +19,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -39,8 +42,6 @@ import com.autox.views.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static com.autox.module.Constant.CATEGORY_TYPE.*;
-
 public class AddActivity extends AppCompatActivity {
     private static final String EXTRA_TYPE = "type";
     private static final String EXTRA_ITEM = "pwd_item";
@@ -59,11 +60,14 @@ public class AddActivity extends AppCompatActivity {
     private ImageView mShareAccountIv;
     private ImageView mCopyAccountIv;
     private PwdItem mPwdItem;
+    private TextView mLikeHeart;
     String mTitle = "其它";
     private RelativeLayout mBackRL;
     private TextView mSaveTV;
     private ConstraintLayout mPlatformWrapper;
     private ImageView mPlatformImage;
+
+    private boolean mLikeState = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,7 @@ public class AddActivity extends AppCompatActivity {
         mShowClearAccountTv = findViewById(R.id.show_clear_account);
         mShareAccountIv = findViewById(R.id.account_share);
         mCopyAccountIv = findViewById(R.id.account_copy);
+        mLikeHeart = findViewById(R.id.icon_like_heart);
         int imageId;
         String platName = "";
         int drawable = R.drawable.platform_icon_other;
@@ -185,6 +190,11 @@ public class AddActivity extends AppCompatActivity {
             }
             mNoteET.setText(mPwdItem.note());
             findViewById(R.id.add_page_platform_arrow_right).setVisibility(View.INVISIBLE);
+            mLikeState = mPwdItem.favor() == 1;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                Drawable likeDrawable = getDrawable(mLikeState ? R.drawable.icon_like_heart : R.drawable.icon_dislike_heart);
+                mLikeHeart.setBackground(likeDrawable);
+            }
         } else {
             mPlatformTV.setText(platName);
             mPlatformImage.setImageResource(drawable);
@@ -232,7 +242,7 @@ public class AddActivity extends AppCompatActivity {
                     note = "";
                 }
                 String pwdmask = ClientEncodeUtil.encode(pwd);
-                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note, 1), false);
+                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note, mLikeState ? 1 : 0), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new DbChanged());
                 EventBus.getDefault().post(new EventGoMainPage());
@@ -424,6 +434,45 @@ public class AddActivity extends AppCompatActivity {
                 ClipData mClipData = ClipData.newPlainText("Label", mAccountET.getText().toString());
                 cm.setPrimaryClip(mClipData);
                 Toast.makeText(AddActivity.this, "账号已经复制到剪切板中", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mLikeHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mLikeState) {
+                    mLikeState = true;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mLikeHeart.setBackground(getDrawable(R.drawable.icon_like_heart));
+                        if (mPwdItem != null) {
+                            DbHelper.getInstance().like(mPwdItem, true);
+                            EventBus.getDefault().post(new DbChanged());
+                        }
+                    }
+                    return;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this)
+                        .setTitle("取消收藏")
+                        .setMessage("确认将该条信息移出\"收藏\"?")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mLikeState = false;
+                                mLikeHeart.setBackground(getDrawable(R.drawable.icon_dislike_heart));
+                                if (mPwdItem != null) {
+                                    DbHelper.getInstance().like(mPwdItem, false);
+                                    EventBus.getDefault().post(new DbChanged());
+                                }
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.create().show();
             }
         });
 

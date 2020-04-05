@@ -115,7 +115,7 @@ public class FavorFrameLayout extends Fragment
                             .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    DbHelper.getInstance().dislike(tmpItem);
+                                    DbHelper.getInstance().like(tmpItem, false);
                                     EventBus.getDefault().post(new DbChanged());
                                 }
                             })
