@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             case "添加":
                 fragment = mAddFrame;
                 break;
-            case "我的":
+            case "设置":
                 fragment = mMeFrame;
                 break;
             case "收藏":

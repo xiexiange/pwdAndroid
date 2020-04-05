@@ -75,7 +75,7 @@
             app:image_selected="@drawable/tab_my_white"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
-            app:title="我的"/>
+            app:title="设置"/>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
