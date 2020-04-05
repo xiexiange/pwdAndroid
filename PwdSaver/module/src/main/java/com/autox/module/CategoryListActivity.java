@@ -121,6 +121,10 @@ public class CategoryListActivity extends AppCompatActivity {
                 break;
         }
         mPwdItemList = DbHelper.getInstance().getPwdSizeByType(mTitle);
+
+        if (mPwdItemList.size() == 0) {
+            findViewById(R.id.empty_wrapper).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -261,6 +265,12 @@ public class CategoryListActivity extends AppCompatActivity {
         mAdatper.notifyDataSetChanged();
         if (mEditTV.getVisibility() == View.GONE) {
             EventBus.getDefault().post(new EventEditClicked(true));
+        }
+
+        if (mPwdItemList.size() == 0) {
+            findViewById(R.id.empty_wrapper).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.empty_wrapper).setVisibility(View.GONE);
         }
     }
 }

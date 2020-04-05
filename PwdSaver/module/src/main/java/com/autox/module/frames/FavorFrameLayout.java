@@ -59,6 +59,9 @@ public class FavorFrameLayout extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new FavorAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        if (mPwdList.size() == 0) {
+            mRoot.findViewById(R.id.empty_wrapper).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -159,5 +162,10 @@ public class FavorFrameLayout extends Fragment
     public void changeData(DbChanged changed) {
         mPwdList = DbHelper.getInstance().getFavorList();
         mAdapter.notifyDataSetChanged();
+        if (mPwdList.size() == 0) {
+            mRoot.findViewById(R.id.empty_wrapper).setVisibility(View.VISIBLE);
+        } else {
+            mRoot.findViewById(R.id.empty_wrapper).setVisibility(View.GONE);
+        }
     }
 }
