@@ -9,6 +9,7 @@ import com.autox.module.entities.EventGoMainPage;
 import com.autox.module.entities.EventSelectTab;
 import com.autox.module.frames.AddFrameLayout;
 import com.autox.module.frames.CategoryFrameLayout;
+import com.autox.module.frames.FavorFrameLayout;
 import com.autox.module.frames.MeFrameLayout;
 import com.autox.module.view.TabView;
 import com.autox.pwd_module.R;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private CategoryFrameLayout mCategoryFrame;
     private AddFrameLayout mAddFrame;
     private MeFrameLayout mMeFrame;
+    private FavorFrameLayout mFavorFrame;
     private String mCurrentTabTitle = "";
     private TabView mCategoryTab;
     @Override
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mCategoryFrame = new CategoryFrameLayout();
         mAddFrame = new AddFrameLayout();
         mMeFrame = new MeFrameLayout();
+        mFavorFrame = new FavorFrameLayout();
         EventBus.getDefault().register(this);
         mCategoryTab.performClick();
     }
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "我的":
                 fragment = mMeFrame;
+                break;
+            case "收藏":
+                fragment = mFavorFrame;
                 break;
         }
         mCurrentTabTitle = tabClicked.getText();

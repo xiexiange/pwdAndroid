@@ -51,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
         //  buddhaName: text
         //  prayTime: text
         //  prayIng: text
-        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, note text, deleted Integer, upload Integer)");
+        db.execSQL("Create Table if not exists " + DB_NAME_PWD + "(id Integer primary key autoincrement, type text, platform text, account text, pwd text, saveTime text, note text, favor Integer, deleted Integer, upload Integer)");
         PrefUtil.setInteger(SharedPrefKeys.KEY_DB_VERSION, DbConstant.DB_VERSION);
     }
 
@@ -99,6 +99,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("pwd", item.pwd() + "");
         values.put("saveTime", item.saveTime() + "");
         values.put("note", item.note());
+        values.put("favor", item.favor());
         values.put("upload", uploadInt);
         values.put("deleted", 0);
         db.insert(DB_NAME_PWD, null, values);
@@ -116,7 +117,27 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(3),
                     cursor.getString(4),
                     Long.parseLong(cursor.getString(5)),
-                    cursor.getString(6)
+                    cursor.getString(cursor.getColumnIndex("note")),                //note
+                    cursor.getInt(cursor.getColumnIndex("favor"))
+            );
+            items.add(item);
+        }
+        return items;
+    }
+
+    public List<PwdItem> getFavorList() {
+        List<PwdItem> items = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD + " where favor=1 and deleted=0" , new String[]{});
+        while (cursor.moveToNext()) {
+            PwdItem item = new PwdItem(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),                    //account
+                    cursor.getString(4),                    //pwd
+                    Long.parseLong(cursor.getString(5)),    //saveTime
+                    cursor.getString(cursor.getColumnIndex("note")),                //note
+                    cursor.getInt(cursor.getColumnIndex("favor"))
             );
             items.add(item);
         }
@@ -133,7 +154,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(3),
                     cursor.getString(4),
                     Long.parseLong(cursor.getString(5)),
-                    cursor.getString(6)
+                    cursor.getString(cursor.getColumnIndex("note")),                //note
+                    cursor.getInt(cursor.getColumnIndex("favor"))
             );
             items.add(item);
         }
@@ -151,11 +173,22 @@ public class DbHelper extends SQLiteOpenHelper {
                     cursor.getString(3),                    //account
                     cursor.getString(4),                    //pwd
                     Long.parseLong(cursor.getString(5)),    //saveTime
-                    cursor.getString(cursor.getColumnIndex("note"))                     //note
+                    cursor.getString(cursor.getColumnIndex("note")),                //note
+                    cursor.getInt(cursor.getColumnIndex("favor"))
             );
             items.add(item);
         }
         return items;
+    }
+
+    public void dislike(PwdItem item) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("type", item.type() + "");
+        values.put("platform", item.platform() + "");
+        values.put("account", item.account() + "");
+        values.put("favor", 0);
+        db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
 
     public void update(SQLiteDatabase db, PwdItem item) {
@@ -165,6 +198,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("account", item.account() + "");
         values.put("pwd", item.pwd() + "");
         values.put("note", item.note() + "");
+        values.put("favor", item.favor());
         values.put("upload", 0);
         db.update(DB_NAME_PWD, values, "type=? and platform=? and account=?", new String[]{item.type() + "", item.platform() + "", item.account() + ""});
     }
@@ -193,6 +227,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 String sql1001 = "alter table " + DB_NAME_PWD + " add column note string";
                 db.execSQL(sql1001);
                 break;
+            case 1002:
+                String sql1002 = "alter table " + DB_NAME_PWD + " add column favor Integer";
+                db.execSQL(sql1002);
+                break;
         }
     }
 
@@ -201,7 +239,7 @@ public class DbHelper extends SQLiteOpenHelper {
             case 1000:
                 List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
                 for (PwdItem item : items) {
-                    DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime(), ""));
+                    DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime(), "", 1));
                 }
                 break;
         }

@@ -83,6 +83,12 @@ public class AddActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    public static void start(Context context, PwdItem item) {
+        Intent intent = new Intent(context, AddActivity.class);
+        intent.putExtra(EXTRA_ITEM, item);
+        context.startActivity(intent);
+    }
+
     private void initViews() {
         mIconIV = findViewById(R.id.add_page_detail_icon);
         mTitleTV = findViewById(R.id.add_page_detail_title);
@@ -102,51 +108,55 @@ public class AddActivity extends AppCompatActivity {
         int imageId;
         String platName = "";
         int drawable = R.drawable.platform_icon_other;
-        switch (mType) {
-            case WORK:
-                mTitle = "工作";
-                imageId = R.drawable.icon_work;
-                platName = "邮箱";
-                drawable = R.drawable.platform_icon_mail;
-                break;
-            case VIDEO:
-                mTitle = "视频";
-                imageId = R.drawable.icon_video;
-                drawable = R.drawable.platform_icon_iqiyi;
-                platName = "爱奇艺视频";
-                break;
-            case MAIL:
-                mTitle = "邮箱";
-                imageId = R.drawable.icon_mail;
-                drawable = R.drawable.platform_icon_qqmail;
-                platName = "QQ邮箱";
-                break;
-            case MONEY:
-                mTitle = "金融";
-                imageId = R.drawable.icon_wallet;
-                drawable = R.drawable.platform_icon_zhaoshang;
-                platName = "招商银行(暂不支持密码)";
-                mPwdET.setEnabled(false);
-                mPwdET.setText("暂不支持");
-                break;
-            case GAME:
-                mTitle = "游戏";
-                imageId = R.drawable.icon_game;
-                drawable = R.drawable.platform_icon_mobilegame;
-                platName = "手机游戏";
-                break;
-            case WEB:
-                mTitle = "网址";
-                imageId = R.drawable.icon_web;
-                drawable = R.drawable.platform_icon_google;
-                platName = "谷歌";
-                break;
-            case OTHER:
-            default:
-                mTitle = "其它";
-                imageId = R.drawable.icon_other;
-                platName = "其它";
-                break;
+        if (mType != null) {
+            switch (mType) {
+                case WORK:
+                    mTitle = "工作";
+                    imageId = R.drawable.icon_work;
+                    platName = "邮箱";
+                    drawable = R.drawable.platform_icon_mail;
+                    break;
+                case VIDEO:
+                    mTitle = "视频";
+                    imageId = R.drawable.icon_video;
+                    drawable = R.drawable.platform_icon_iqiyi;
+                    platName = "爱奇艺视频";
+                    break;
+                case MAIL:
+                    mTitle = "邮箱";
+                    imageId = R.drawable.icon_mail;
+                    drawable = R.drawable.platform_icon_qqmail;
+                    platName = "QQ邮箱";
+                    break;
+                case MONEY:
+                    mTitle = "金融";
+                    imageId = R.drawable.icon_wallet;
+                    drawable = R.drawable.platform_icon_zhaoshang;
+                    platName = "招商银行(暂不支持密码)";
+                    mPwdET.setEnabled(false);
+                    mPwdET.setText("暂不支持");
+                    break;
+                case GAME:
+                    mTitle = "游戏";
+                    imageId = R.drawable.icon_game;
+                    drawable = R.drawable.platform_icon_mobilegame;
+                    platName = "手机游戏";
+                    break;
+                case WEB:
+                    mTitle = "网址";
+                    imageId = R.drawable.icon_web;
+                    drawable = R.drawable.platform_icon_google;
+                    platName = "谷歌";
+                    break;
+                case OTHER:
+                default:
+                    mTitle = "其它";
+                    imageId = R.drawable.icon_other;
+                    platName = "其它";
+                    break;
+            }
+            mIconIV.setImageResource(imageId);
+
         }
         if (mPwdItem != null) {
             String account = mPwdItem.account();
@@ -179,8 +189,10 @@ public class AddActivity extends AppCompatActivity {
             mPlatformTV.setText(platName);
             mPlatformImage.setImageResource(drawable);
         }
-        mIconIV.setImageResource(imageId);
         mTitleTV.setText(mTitle);
+        if (mType == null) {
+            findViewById(R.id.add_page_title_wrapper).setVisibility(View.GONE);
+        }
 
     }
 
@@ -220,7 +232,7 @@ public class AddActivity extends AppCompatActivity {
                     note = "";
                 }
                 String pwdmask = ClientEncodeUtil.encode(pwd);
-                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note), false);
+                DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note, 1), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                 EventBus.getDefault().post(new DbChanged());
                 EventBus.getDefault().post(new EventGoMainPage());
