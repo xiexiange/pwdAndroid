@@ -229,16 +229,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 db.execSQL(sql1001);
                 break;
             case 1002:
-                String sql1002 = "alter table " + DB_NAME_PWD + " add column favor Integer";
+                String sql1002 = "alter table " + DB_NAME_PWD + " add column favor Integer default 1";
                 db.execSQL(sql1002);
                 break;
         }
     }
 
     private void dealDBData(SQLiteDatabase db, int version) {
+        List<PwdItem> items;
         switch (version) {
             case 1000:
-                List<PwdItem> items = DbHelper.getInstance().getPwdList(db);
+                items = DbHelper.getInstance().getPwdList(db);
                 for (PwdItem item : items) {
                     DbHelper.getInstance().update(db, new PwdItem(item.type(), item.platform(), item.account(), ClientEncodeUtil.encode(item.pwd()), item.saveTime(), "", 1));
                 }
