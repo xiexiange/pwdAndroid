@@ -25,6 +25,8 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.autox.module.PwdVerifyActivity"
             android:theme="@style/translucent"/>
+        <activity android:name="com.autox.module.PwdSearchActivity"
+            android:theme="@style/translucent"/>
 
     </application>
 

@@ -1,6 +1,7 @@
 package com.autox.module.frames;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.autox.module.CategoryListActivity;
+import com.autox.module.PwdSearchActivity;
 import com.autox.module.entities.DbChanged;
 import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.localdata.database.items.PwdItem;
@@ -35,16 +37,29 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
     private RecyclerView mRecyclerView;
     ArrayList<ListEntity> mEntities = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
+    private TextView mSearchIcon;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.frame_category, null);
         mRecyclerView = mRoot.findViewById(R.id.category_recycler_view);
+        mSearchIcon = mRoot.findViewById(R.id.search_icon);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         mAdapter = new RecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        bindEvents();
         return mRoot;
+    }
+
+    private void bindEvents() {
+        mSearchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PwdSearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

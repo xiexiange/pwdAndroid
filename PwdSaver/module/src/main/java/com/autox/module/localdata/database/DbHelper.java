@@ -125,6 +125,38 @@ public class DbHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public List<PwdItem> getPwdListBySearch(String string) {
+        List<PwdItem> items = getUnDeletedPwdList();
+        List<PwdItem> result = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            PwdItem item = items.get(i);
+            if (item.account().contains(string)
+            || item.platform().contains(string)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public List<PwdItem> getUnDeletedPwdList() {
+        List<PwdItem> items = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + DB_NAME_PWD + " where deleted=0", new String[]{});
+        while (cursor.moveToNext()) {
+            PwdItem item = new PwdItem(
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    Long.parseLong(cursor.getString(5)),
+                    cursor.getString(cursor.getColumnIndex("note")),                //note
+                    cursor.getInt(cursor.getColumnIndex("favor"))
+            );
+            items.add(item);
+        }
+        return items;
+    }
+
     public List<PwdItem> getFavorList() {
         List<PwdItem> items = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
