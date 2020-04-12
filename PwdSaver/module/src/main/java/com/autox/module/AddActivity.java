@@ -219,9 +219,9 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String type = mTitle;
                 String platform = mPlatformTV.getText().toString();
-                String account = mAccountET.getText().toString();
-                String pwd = mPwdET.getText().toString();
-                String note = mNoteET.getText().toString();
+                String account = mAccountET.getText().toString().replace("\"", "“");
+                String pwd = mPwdET.getText().toString().replace("\"", "“");
+                String note = mNoteET.getText().toString().replace("\"", "“");
                 if (TextUtils.isEmpty(platform)) {
                     Toast.makeText(AddActivity.this, "平台名称不能为空", Toast.LENGTH_SHORT).show();
                     return;
