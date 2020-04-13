@@ -12,6 +12,7 @@ import com.autox.module.frames.CategoryFrameLayout;
 import com.autox.module.frames.FavorFrameLayout;
 import com.autox.module.frames.MeFrameLayout;
 import com.autox.module.localdata.database.DbHelper;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.TabView;
 import com.autox.pwd_module.R;
 import com.autox.views.StatusBarUtil;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mCategoryTab.performClick();
         }
+        ModuleBaseUtil.recordUsage(Constant.USAGE_OPEN_APP, "1");
     }
 
 

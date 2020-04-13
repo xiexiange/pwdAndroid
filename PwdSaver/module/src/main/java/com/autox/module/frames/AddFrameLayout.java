@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.autox.module.AddActivity;
 import com.autox.module.Constant;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.recyclerviews.entity.ListEntity;
 import com.autox.pwd_module.R;
 
@@ -68,7 +69,8 @@ public class AddFrameLayout extends Fragment
                     @Override
                     public void onClick(View v) {
                         Constant.CATEGORY_TYPE type = Constant.CATEGORY_TYPE.GAME;
-                        switch (titleTV.getText().toString()) {
+                        String title = titleTV.getText().toString();
+                        switch (title) {
                             case "工作":
                                 type = Constant.CATEGORY_TYPE.WORK;
                                 break;
@@ -88,6 +90,7 @@ public class AddFrameLayout extends Fragment
                                 type = Constant.CATEGORY_TYPE.OTHER;
                                 break;
                         }
+                        ModuleBaseUtil.recordUsage(Constant.USAGE_ADD_ITEM_CLICK, title);
                         AddActivity.start(getActivity(), type, null);
                     }
                 });

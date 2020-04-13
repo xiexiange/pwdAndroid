@@ -37,6 +37,7 @@ import com.autox.module.localdata.database.items.PwdItem;
 import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.module.util.ClientEncodeUtil;
 import com.autox.module.util.MaskUtil;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.pwd_module.R;
 import com.autox.views.StatusBarUtil;
 
@@ -244,8 +245,14 @@ public class AddActivity extends AppCompatActivity {
                 String pwdmask = ClientEncodeUtil.encode(pwd);
                 DbHelper.getInstance().insert(new PwdItem(type, platform, account, pwdmask, System.currentTimeMillis(), note, mLikeState ? 1 : 0), false);
                 Toast.makeText(AddActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+                if (mPwdItem == null) {
+                    ModuleBaseUtil.recordUsage(Constant.USAGE_SAVE_CLICK_ADD, "");
+                } else {
+                    ModuleBaseUtil.recordUsage(Constant.USAGE_CHECK_SAVE_CLICK, "");
+                }
                 EventBus.getDefault().post(new DbChanged());
                 EventBus.getDefault().post(new EventGoMainPage());
+                ModuleBaseUtil.recordUsage(Constant.USAGE_PLATFORM, platform);
                 finish();
             }
         });
@@ -424,6 +431,7 @@ public class AddActivity extends AppCompatActivity {
                 if (shareIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(shareIntent);
                 }
+                ModuleBaseUtil.recordUsage(Constant.USAGE_SHARE_CLICK, "1");
             }
         });
 
@@ -434,6 +442,7 @@ public class AddActivity extends AppCompatActivity {
                 ClipData mClipData = ClipData.newPlainText("Label", mAccountET.getText().toString());
                 cm.setPrimaryClip(mClipData);
                 Toast.makeText(AddActivity.this, "账号已经复制到剪切板中", Toast.LENGTH_SHORT).show();
+                ModuleBaseUtil.recordUsage(Constant.USAGE_COPY_CLICK, "1");
             }
         });
 

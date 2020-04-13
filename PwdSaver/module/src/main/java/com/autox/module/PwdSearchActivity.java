@@ -21,6 +21,7 @@ import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.localdata.database.items.PwdItem;
 import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.module.util.MaskUtil;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.EventTextView;
 import com.autox.pwd_module.R;
 import com.autox.views.StatusBarUtil;
@@ -128,6 +129,7 @@ public class PwdSearchActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     AddActivity.start(PwdSearchActivity.this, tmpItem);
+                    ModuleBaseUtil.recordUsage(Constant.USAGE_SEARCH_ITEM_CLICK, "1");
                 }
             });
 

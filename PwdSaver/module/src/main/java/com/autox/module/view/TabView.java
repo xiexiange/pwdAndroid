@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.autox.module.Constant;
 import com.autox.module.entities.EventSelectTab;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.pwd_module.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,7 +57,9 @@ public class TabView extends ConstraintLayout {
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new EventSelectTab(mTitleTv.getText().toString()));
+                String tab = mTitleTv.getText().toString();
+                EventBus.getDefault().post(new EventSelectTab(tab));
+                ModuleBaseUtil.recordUsage(Constant.USAGE_TAB_CLICK, tab);
             }
         });
         EventBus.getDefault().register(this);

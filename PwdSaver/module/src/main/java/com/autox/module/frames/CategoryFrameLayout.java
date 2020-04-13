@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.autox.module.CategoryListActivity;
+import com.autox.module.Constant;
 import com.autox.module.PwdSearchActivity;
 import com.autox.module.entities.DbChanged;
 import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.localdata.database.items.PwdItem;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.RefreshScrollView;
 import com.autox.module.view.recyclerviews.entity.ListEntity;
 import com.autox.pwd_module.R;
@@ -58,6 +60,7 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PwdSearchActivity.class);
                 startActivity(intent);
+                ModuleBaseUtil.recordUsage(Constant.USAGE_SEARCH_CLICK, "1");
             }
         });
     }
@@ -130,6 +133,7 @@ public class CategoryFrameLayout extends Fragment implements RefreshScrollView.R
                     @Override
                     public void onClick(View v) {
                         CategoryListActivity.start(getActivity(), titleTV.getText().toString());
+                        ModuleBaseUtil.recordUsage(Constant.USAGE_MAIN_ITEM_CLICK, titleTV.getText().toString());
                     }
                 });
             }

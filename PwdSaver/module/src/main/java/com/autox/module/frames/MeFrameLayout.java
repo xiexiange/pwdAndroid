@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.autox.base.BaseUtil;
 import com.autox.base.PrefUtil;
+import com.autox.module.Constant;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.os.OSUtils;
 import com.autox.module.PwdSetActivity;
 import com.autox.module.PwdVerifyActivity;
@@ -95,6 +97,7 @@ public class MeFrameLayout extends Fragment
                         return true;
                     }
                 }
+                ModuleBaseUtil.recordUsage(Constant.USAGE_SET_CLEAR_ACCOUNT_CLICK, "1");
                 return false;
             }
         });
@@ -140,6 +143,7 @@ public class MeFrameLayout extends Fragment
                 } else {
                     Toast.makeText(getActivity(), "未找到可发送邮件的应用", Toast.LENGTH_SHORT).show();
                 }
+                ModuleBaseUtil.recordUsage(Constant.USAGE_SET_FEEDBACK, "1");
             }
         });
         mShareView.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +165,8 @@ public class MeFrameLayout extends Fragment
                 } else {
                     Toast.makeText(getActivity(), "未找到可分享的软件", Toast.LENGTH_SHORT).show();
                 }
+                ModuleBaseUtil.recordUsage(Constant.USAGE_SET_SHARE, "1");
+
             }
         });
         mClearPwdSwitch.setChecked(!PrefUtil.getBoolean(SharedPrefKeys.KEY_ENABLE_ACCOUNT_MASK, false));
@@ -180,7 +186,7 @@ public class MeFrameLayout extends Fragment
                         PrefUtil.setString(SharedPrefKeys.KEY_PWD, "");
                         mClearPwdSwitch.setChecked(true);
                         Toast.makeText(getActivity(), "已删除所有数据", Toast.LENGTH_SHORT).show();
-                        // todo 可以做个意见反馈
+                        ModuleBaseUtil.recordUsage(Constant.USAGE_SET_CLEAR_ALL, "1");
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -218,6 +224,7 @@ public class MeFrameLayout extends Fragment
             case REQUEST_SET_PWD_CODE:
                 if (resultCode == PwdSetActivity.RESULT_OK) {
                     mClearPwdSwitch.setChecked(false);
+                    ModuleBaseUtil.recordUsage(Constant.USAGE_SET_CLEAR_ACCOUNT_SUCCESS, "1");
                 }
                 break;
             case REQUEST_VERIFY_PWD_CODE_DELETE:

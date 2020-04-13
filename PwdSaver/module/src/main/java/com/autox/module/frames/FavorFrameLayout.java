@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.autox.base.PrefUtil;
 import com.autox.module.AddActivity;
+import com.autox.module.Constant;
 import com.autox.module.PlatformListActivity;
 import com.autox.module.entities.DbChanged;
 import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.localdata.database.items.PwdItem;
 import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
 import com.autox.module.util.MaskUtil;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.EventTextView;
 import com.autox.pwd_module.R;
 
@@ -107,6 +109,7 @@ public class FavorFrameLayout extends Fragment
                 @Override
                 public void onClick(View v) {
                     AddActivity.start(getActivity(), tmpItem);
+                    ModuleBaseUtil.recordUsage(Constant.USAGE_FAVOR_ITEM_CLICK, "1");
                 }
             });
             holder.favor.setOnClickListener(new View.OnClickListener() {
