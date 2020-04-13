@@ -91,7 +91,13 @@ public class PwdSearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                int start = mInputEt.getSelectionStart();
+                int end = mInputEt.getSelectionEnd();
+                if (mInputEt.getText().toString().contains("\r") || mInputEt.getText().toString().contains("\n")) {
+                    s.delete(start - 1, end);
+                    mInputEt.setText(s);
+                    mInputEt.setSelection(end - 1);
+                }
             }
         });
     }
