@@ -28,6 +28,11 @@ public class EApplication extends Application {
             public String getApplicationID() {
                 return BuildConfig.APPLICATION_ID;
             }
+
+            @Override
+            public void recordUsage(String s, String s1) {
+
+            }
         });
     }
 
