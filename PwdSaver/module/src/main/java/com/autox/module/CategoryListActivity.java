@@ -49,7 +49,7 @@ public class CategoryListActivity extends AppCompatActivity {
     private RelativeLayout mBackRL;
     private TextView mEditTV;
     private RecyclerView mRecyclerView;
-    private RecyclerViewAdapter mAdatper;
+    private RecyclerViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +145,8 @@ public class CategoryListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.list_rv_wrapper);
         mTitleTV.setText(mTitle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mAdatper = new RecyclerViewAdapter();
-        mRecyclerView.setAdapter(mAdatper);
+        mAdapter = new RecyclerViewAdapter();
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void bindEvents() {
@@ -265,7 +265,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Subscribe(threadMode= ThreadMode.MAIN)
     public void dbChanged(DbChanged changed) {
         mPwdItemList = DbHelper.getInstance().getPwdSizeByType(mTitle);
-        mAdatper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
         if (mEditTV.getVisibility() == View.GONE) {
             EventBus.getDefault().post(new EventEditClicked(true));
         }
