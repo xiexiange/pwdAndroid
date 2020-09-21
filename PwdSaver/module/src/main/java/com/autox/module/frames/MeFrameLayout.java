@@ -5,9 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,19 +14,22 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.autox.base.BaseUtil;
 import com.autox.base.PrefUtil;
 import com.autox.module.Constant;
-import com.autox.module.util.ModuleBaseUtil;
-import com.autox.os.OSUtils;
 import com.autox.module.PwdSetActivity;
 import com.autox.module.PwdVerifyActivity;
 import com.autox.module.entities.DbChanged;
 import com.autox.module.localdata.database.DbHelper;
 import com.autox.module.localdata.database.items.PwdItem;
 import com.autox.module.localdata.sharedprefs.SharedPrefKeys;
+import com.autox.module.util.ModuleBaseUtil;
 import com.autox.module.view.ItemViewList;
+import com.autox.os.OSUtils;
 import com.autox.pwd_module.R;
 
 import org.greenrobot.eventbus.EventBus;

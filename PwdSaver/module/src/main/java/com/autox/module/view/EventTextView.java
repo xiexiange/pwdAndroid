@@ -1,11 +1,12 @@
 package com.autox.module.view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+
+import androidx.annotation.Nullable;
 
 import com.autox.module.entities.EventEditClicked;
 

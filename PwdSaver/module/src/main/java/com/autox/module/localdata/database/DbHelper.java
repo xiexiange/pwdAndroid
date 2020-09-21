@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
-import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.autox.base.BaseUtil;
 import com.autox.base.PrefUtil;
