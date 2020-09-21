@@ -193,8 +193,8 @@ public class AddActivity extends AppCompatActivity {
             findViewById(R.id.add_page_platform_arrow_right).setVisibility(View.INVISIBLE);
             mLikeState = mPwdItem.favor() == 1;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                Drawable likeDrawable = getDrawable(mLikeState ? R.drawable.icon_like_heart : R.drawable.icon_dislike_heart);
-                mLikeHeart.setBackground(likeDrawable);
+                int likeDrawable = (mLikeState ? R.drawable.icon_like_heart : R.drawable.icon_dislike_heart);
+                mLikeHeart.setBackgroundResource(likeDrawable);
             }
         } else {
             mPlatformTV.setText(platName);
@@ -452,7 +452,7 @@ public class AddActivity extends AppCompatActivity {
                 if (!mLikeState) {
                     mLikeState = true;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mLikeHeart.setBackground(getDrawable(R.drawable.icon_like_heart));
+                        mLikeHeart.setBackgroundResource(R.drawable.icon_like_heart);
                         if (mPwdItem != null) {
                             DbHelper.getInstance().like(mPwdItem, true);
                             EventBus.getDefault().post(new DbChanged());
@@ -468,7 +468,7 @@ public class AddActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mLikeState = false;
-                                mLikeHeart.setBackground(getDrawable(R.drawable.icon_dislike_heart));
+                                mLikeHeart.setBackgroundResource(R.drawable.icon_dislike_heart);
                                 if (mPwdItem != null) {
                                     DbHelper.getInstance().like(mPwdItem, false);
                                     EventBus.getDefault().post(new DbChanged());
