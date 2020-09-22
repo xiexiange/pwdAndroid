@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,13 @@ public class TabView extends ConstraintLayout {
             drawableSelected = typedArray.getDrawable(R.styleable.TabView_image_selected);
             drawableUnselected = typedArray.getDrawable(R.styleable.TabView_image_default);
             mTitleTv.setText(title);
-            mImageView.setBackground(drawableUnselected);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                //Android系统大于等于API16，使用setBackground
+                mImageView.setBackground(drawableUnselected);
+            } else {
+                //Android系统小于API16，使用setBackground
+                mImageView.setBackgroundDrawable(drawableUnselected);
+            }
         }
         root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +76,18 @@ public class TabView extends ConstraintLayout {
     public void onResetTab(EventSelectTab eventSelectTab) {
         setSelected(false);
         mTitleTv.setTextColor(Color.parseColor("#333333"));
-        mImageView.setBackground(drawableUnselected);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mImageView.setBackground(drawableUnselected);
+        } else {
+            mImageView.setBackgroundDrawable(drawableUnselected);
+        }
         if (mTitleTv.getText().equals(eventSelectTab.getText())) {
             mTitleTv.setTextColor(Color.parseColor("#ffffff"));
-            mImageView.setBackground(drawableSelected);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mImageView.setBackground(drawableSelected);
+            } else {
+                mImageView.setBackgroundDrawable(drawableSelected);
+            }
             setSelected(true);
         }
     }

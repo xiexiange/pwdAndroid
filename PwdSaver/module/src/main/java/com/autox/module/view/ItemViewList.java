@@ -3,6 +3,7 @@ package com.autox.module.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,11 @@ public class ItemViewList extends ConstraintLayout {
             String title = typedArray.getString(R.styleable.ItemViewList_item_title);
             Drawable drawable = typedArray.getDrawable(R.styleable.ItemViewList_image);
             mTitleTv.setText(title);
-            mImageView.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mImageView.setBackground(drawable);
+            } else {
+                mImageView.setBackgroundDrawable(drawable);
+            }
         }
     }
 }
